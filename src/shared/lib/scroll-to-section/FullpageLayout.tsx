@@ -3,7 +3,6 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { useFullpage } from "./useFullpage";
 import { FullpageContext } from "./FullpageContext";
-import { FullpageNav } from "./FullpageNav";
 import { FullpageProgress } from "./FullpageProgress";
 import { ReactNode } from "react";
 import { LanguageSwitcher } from "@/features/language-switcher/ui/LanguageSwitcher";
@@ -19,11 +18,6 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
       <AnimatedBackground />
 
       <div className="w-full h-screen overflow-hidden relative z-10">
-        <FullpageNav
-          count={sections.length}
-          active={index}
-          onSelect={(i) => setIndex(i)}
-        />
 
         <FullpageProgress />
 

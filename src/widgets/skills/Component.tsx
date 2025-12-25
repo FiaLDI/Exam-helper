@@ -46,7 +46,7 @@ export const Skills = ({ skillsDict }: SkillsProps) => {
     <section
       ref={ref}
       data-scrollable
-      className="h-screen max-w-7xl mx-auto w-full px-6 py-20
+      className="h-screen max-w-7xl mx-auto w-full px-6 py-40
                  overflow-y-auto no-scrollbar text-white relative"
     >
       <motion.div
@@ -55,7 +55,7 @@ export const Skills = ({ skillsDict }: SkillsProps) => {
       />
 
       {/* HEADER */}
-      <div className="mb-20 max-w-2xl">
+      <div className="mb-5 max-w-2xl">
         <motion.h2
           initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -78,7 +78,7 @@ export const Skills = ({ skillsDict }: SkillsProps) => {
       </div>
 
       {/* CONTENT */}
-      <div className="space-y-32 pb-32">
+      <div className="space-y-20">
         {data.groups.map((group) => (
           <motion.section
             key={group.level}

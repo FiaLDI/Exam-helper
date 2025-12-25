@@ -44,12 +44,12 @@ export const ProjectList = ({ projectsDict }: ProjectListProps) => {
       data-scrollable
       className="h-screen no-scrollbar relative overflow-y-auto max-w-7xl mx-auto w-full p-5 pt-10 text-white"
     >
-      <h2 className="text-3xl font-bold border-b-2 border-neutral-700 px-3 py-1">
+      <h2 className="text-3xl font-bold border-b-2 border-neutral-700 p-5">
         {data.title}
       </h2>
 
       {/* CATEGORY RAIL */}
-      <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-20 flex gap-4 bg-black/40 backdrop-blur-md rounded-xl px-4 py-2">
+      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 z-20 flex gap-4 bg-black/40 backdrop-blur-md rounded-xl px-4 py-2">
         {categories.map((cat) => (
           <button
             key={cat}
@@ -70,7 +70,7 @@ export const ProjectList = ({ projectsDict }: ProjectListProps) => {
       </div>
 
       {/* CATEGORIES */}
-      <div className="space-y-24 pb-20">
+      <div className="space-y-24 p-5 pb-20">
         {categories.map((category) => (
           <motion.section
             key={category}

@@ -1,23 +1,37 @@
 "use client";
 
-import { motion, useTransform } from "framer-motion";
 import { useContext } from "react";
 import { FullpageContext } from "./FullpageContext";
+
+const sections = [
+  { label: "Home", index: 0 },
+  { label: "About", index: 1 },
+  { label: "Projects", index: 2 },
+  { label: "Timeline", index: 3 },
+  { label: "Contact", index: 4 },
+];
 
 export function FullpageProgress() {
   const ctx = useContext(FullpageContext);
   if (!ctx) return null;
 
-  const { progress } = ctx;
-
-  const height = useTransform(progress, [0, 1], ["0%", "100%"]);
+  const { index, setIndex } = ctx;
 
   return (
-    <div className="fixed right-3 top-1/2 -translate-y-1/2 h-96 w-1 bg-neutral-700/40 rounded-full overflow-hidden z-50">
-      <motion.div
-        className="bg-indigo-500 w-full rounded-full origin-bottom"
-        style={{ height }}
-      />
+    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-20 flex gap-4 bg-black/40 backdrop-blur-md rounded-xl px-4 py-2">
+      {sections.map((section) => (
+        <button
+          key={section.index}
+          onClick={() => setIndex(section.index)}
+          className={`text-sm transition-colors ${
+            index === section.index
+              ? "text-indigo-400"
+              : "text-neutral-400 hover:text-neutral-200"
+          }`}
+        >
+          {section.label}
+        </button>
+      ))}
     </div>
   );
 }
