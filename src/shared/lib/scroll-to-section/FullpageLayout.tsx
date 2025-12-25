@@ -1,7 +1,7 @@
 "use client";
 
-import { motion } from "framer-motion";
-import { ReactNode, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ReactNode, useEffect, useRef, useState } from "react";
 import { useFullpage } from "./useFullpage";
 import { FullpageContext } from "./FullpageContext";
 import { FullpageProgress } from "./FullpageProgress";
@@ -16,10 +16,14 @@ const WHEEL_COOLDOWN_MS = 700;
 
 /* ---------------- HELPERS ---------------- */
 
-function getScrollableParent(target: EventTarget | null): HTMLElement | null {
+function getScrollableParent(
+  target: EventTarget | null
+): HTMLElement | null {
   let el = target as HTMLElement | null;
   while (el) {
-    if (el.hasAttribute?.("data-scrollable")) return el;
+    if (el instanceof HTMLElement && el.hasAttribute("data-scrollable")) {
+      return el;
+    }
     el = el.parentElement;
   }
   return null;
@@ -27,10 +31,19 @@ function getScrollableParent(target: EventTarget | null): HTMLElement | null {
 
 function canScroll(el: HTMLElement, delta: number) {
   const { scrollTop, scrollHeight, clientHeight } = el;
+
   if (scrollHeight <= clientHeight) return false;
 
-  if (delta > 0) return scrollTop + clientHeight < scrollHeight - 1;
-  if (delta < 0) return scrollTop > 0;
+  // delta > 0 — пытаемся скроллить вниз
+  if (delta > 0) {
+    return scrollTop + clientHeight < scrollHeight - 1;
+  }
+
+  // delta < 0 — пытаемся скроллить вверх
+  if (delta < 0) {
+    return scrollTop > 0;
+  }
+
   return false;
 }
 
@@ -45,19 +58,9 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
     typeof window !== "undefined" &&
     window.matchMedia("(pointer: coarse)").matches;
 
-  const max = sections.length - 1;
+  const [lockScroll, setLockScroll] = useState(false);
   const lastWheelTs = useRef(0);
-  const touchStartY = useRef(0);
-
-  /* ---------- BLOCK BODY SCROLL ON MOBILE ---------- */
-  useEffect(() => {
-    if (!isMobile) return;
-
-    document.body.style.overflow = "hidden";
-    return () => {
-      document.body.style.overflow = "";
-    };
-  }, [isMobile]);
+  const max = sections.length - 1;
 
   /* ---------- DESKTOP WHEEL ---------- */
   useEffect(() => {
@@ -66,7 +69,10 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
     const onWheel = (e: WheelEvent) => {
       const scrollable = getScrollableParent(e.target);
 
+      // если есть scrollable и он может скроллить — даём ему
       if (scrollable && canScroll(scrollable, e.deltaY)) return;
+
+      if (lockScroll) return;
       if (Math.abs(e.deltaY) < WHEEL_THRESHOLD) return;
 
       const now = Date.now();
@@ -81,40 +87,43 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
 
     window.addEventListener("wheel", onWheel, { passive: false });
     return () => window.removeEventListener("wheel", onWheel);
-  }, [index, max, setIndex, isMobile]);
+  }, [index, max, lockScroll, setIndex, isMobile]);
 
   /* ---------- MOBILE SWIPE ---------- */
   useEffect(() => {
     if (!isMobile) return;
 
-    const onTouchStart = (e: TouchEvent) => {
-      touchStartY.current = e.touches[0].clientY;
-    };
+    let startY = 0;
 
-    const onTouchMove = (e: TouchEvent) => {
-      e.preventDefault(); // 🔥 критично
+    const onTouchStart = (e: TouchEvent) => {
+      startY = e.touches[0].clientY;
     };
 
     const onTouchEnd = (e: TouchEvent) => {
       const endY = e.changedTouches[0].clientY;
-      const delta = endY - touchStartY.current;
+      const delta = endY - startY;
 
       if (Math.abs(delta) < SWIPE_THRESHOLD) return;
 
       const scrollable = getScrollableParent(e.target);
-      if (scrollable && canScroll(scrollable, delta < 0 ? 1 : -1)) return;
 
+      // если внутри scrollable и он может скроллить в сторону жеста — не листаем секцию
+      // свайп вверх (delta < 0) => scroll вниз
+      // свайп вниз (delta > 0) => scroll вверх
+      if (scrollable && canScroll(scrollable, delta < 0 ? 1 : -1)) {
+        return;
+      }
+
+      // иначе — fullpage
       if (delta < 0 && index < max) setIndex(index + 1);
       if (delta > 0 && index > 0) setIndex(index - 1);
     };
 
     window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchmove", onTouchMove, { passive: false });
     window.addEventListener("touchend", onTouchEnd, { passive: true });
 
     return () => {
       window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchmove", onTouchMove);
       window.removeEventListener("touchend", onTouchEnd);
     };
   }, [index, max, setIndex, isMobile]);
@@ -128,39 +137,42 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
         progress,
         projectsProgress,
         setIndex,
-        lockScroll: false,
-        setLockScroll: () => {},
+        lockScroll,
+        setLockScroll,
       }}
     >
-      {!isMobile && <AnimatedBackground />}
+      <AnimatedBackground />
 
-      <div className="relative w-full h-screen overflow-hidden">
+      <div className="w-full h-screen overflow-hidden relative z-10">
         <FullpageProgress />
         <LanguageSwitcher />
 
-        <motion.div
-          className="absolute inset-0"
-          style={{ willChange: "transform" }}
-          animate={{ translateY: `-${index * 100}vh` }}
-          transition={{ duration: 0.6, ease: "easeInOut" }}
-          drag={!isMobile ? "y" : false}
-          dragConstraints={{ top: 0, bottom: 0 }}
-          dragElastic={0.12}
-          onDragEnd={(_, info) => {
-            if (isMobile) return;
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={index}
+            className="absolute inset-0"
+            drag={isMobile ? false : "y"}
+            dragConstraints={{ top: 0, bottom: 0 }}
+            dragElastic={0.15}
+            onDragEnd={(_, info) => {
+              if (isMobile || lockScroll) return;
 
-            if (info.offset.y < -SWIPE_THRESHOLD && index < max)
-              setIndex(index + 1);
-            if (info.offset.y > SWIPE_THRESHOLD && index > 0)
-              setIndex(index - 1);
-          }}
-        >
-          {sections.map((section, i) => (
-            <section key={i} className="h-screen w-full">
-              {section}
-            </section>
-          ))}
-        </motion.div>
+              if (info.offset.y < -SWIPE_THRESHOLD && index < max) {
+                setIndex(index + 1);
+              }
+
+              if (info.offset.y > SWIPE_THRESHOLD && index > 0) {
+                setIndex(index - 1);
+              }
+            }}
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "-100%" }}
+            transition={{ duration: 0.7, ease: "easeInOut" }}
+          >
+            <div className="h-full w-full">{sections[index]}</div>
+          </motion.div>
+        </AnimatePresence>
       </div>
     </FullpageContext.Provider>
   );
