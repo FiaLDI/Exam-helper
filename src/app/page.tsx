@@ -1,4 +1,4 @@
-import { FullpageLayout } from "@/shared/lib/scroll-to-section/FullpageLayout";
+import { FullpageLayout } from "@/features/custom-scroll/ui/FullpageLayout";
 import { getDict } from "@/shared/utils/getDict";
 import { getLang } from "@/shared/utils/server/getLang";
 import { Contacts } from "@/widgets/contacts ";

@@ -1,1 +1,0 @@
-export { Component as NavLink } from "./Component"

@@ -14,17 +14,18 @@ export type HeroDict = {
 export const HeroData: Record<Language, HeroDict> = {
   en: {
     title: "Leonid Stepanov",
-    subTitle: "Full-Stack Software Engineer",
+    subTitle: "Full-Stack Developer",
     value:
-      "Software engineer focused on building scalable, resilient, and high-performance web platforms. I design systems that prioritize reliability, clean architecture, and long-term maintainability.",
+  "I develop and support web applications, implementing new features, integrating APIs, and fixing bugs. I have commercial development experience, working with both frontend and backend codebases, with a focus on clear structure and maintainability.",
+
     highlights: [
-      "Core Stack: TypeScript, Next.js, Nest.js, Prisma, PostgreSQL",
-      "Architecture: Modular systems, Clean Architecture, FSD, monorepo workflows",
-      "Scalability: API design, real-time services, distributed architectures",
-      "Engineering Practices: Docker, performance optimization",
+      "TypeScript · Next.js · NestJS · PostgreSQL",
+      "Modular architecture · Clean code principles",
+      "REST APIs · Real-time basics",
+      "Docker · Performance fundamentals",
     ],
     ctaSkills: "Skills",
-    ctaPrimary: "View Projects",
+    ctaPrimary: "Projects",
     image: "/images/leonid.jpg",
   },
 
@@ -32,12 +33,12 @@ export const HeroData: Record<Language, HeroDict> = {
     title: "Леонид Степанов",
     subTitle: "Full-Stack разработчик",
     value:
-      "Инженер-программист, специализирующийся на создании масштабируемых, отказоустойчивых и высокопроизводительных веб-платформ.",
+      "Занимаюсь разработкой и поддержкой веб-приложений: реализую новый функционал, интегрирую API и исправляю баги. Имею коммерческий опыт разработки, работаю как с клиентской, так и с серверной частью, уделяя внимание структуре и поддерживаемости.",
     highlights: [
-      "Стек: TypeScript, Next.js, Nest.js, Prisma, PostgreSQL",
-      "Архитектура: модульные системы, Clean Architecture, FSD, монорепозитории",
-      "Масштабирование: API-дизайн, real-time сервисы, распределённые системы",
-      "Инженерные практики: Docker, оптимизация производительности",
+      "TypeScript · Next.js · NestJS · PostgreSQL",
+      "Модульная архитектура · принципы чистого кода",
+      "REST API · основы real-time",
+      "Docker · основы производительности",
     ],
     ctaSkills: "Навыки",
     ctaPrimary: "Проекты",

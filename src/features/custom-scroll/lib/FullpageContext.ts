@@ -8,9 +8,6 @@ export type FullpageContextType = {
   progress: MotionValue<number>;
   projectsProgress: MotionValue<number>;
   setIndex: (i: number) => void;
-
-  lockScroll: boolean;
-  setLockScroll: (v: boolean) => void;
 };
 
 export const FullpageContext = createContext<FullpageContextType>({
@@ -18,7 +15,4 @@ export const FullpageContext = createContext<FullpageContextType>({
   progress: {} as MotionValue<number>,
   projectsProgress: {} as MotionValue<number>,
   setIndex: () => {},
-
-  lockScroll: false,
-  setLockScroll: () => {},
 });

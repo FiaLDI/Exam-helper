@@ -1,9 +1,5 @@
 import { Language } from "@/features/language-switcher/model/types";
 
-/* ---------------------------------- */
-/* TYPES */
-/* ---------------------------------- */
-
 export type ProjectCategory = "Core" | "Contribution" | "Pet" | "Legacy";
 
 export interface ProjectItem {
@@ -13,6 +9,7 @@ export interface ProjectItem {
   description: string;
   tech: string[];
   link?: string;
+  isPrivate?: boolean;
 }
 
 export type ProjectsDict = {
@@ -21,34 +18,26 @@ export type ProjectsDict = {
   items: ProjectItem[];
 };
 
-/* ---------------------------------- */
-/* PROJECTS DATA */
-/* ---------------------------------- */
-
 export const ProjectsData: Record<Language, ProjectsDict> = {
-  /* ================================ */
-  /* EN */
-  /* ================================ */
   en: {
     title: "Projects",
     categoriesMeta: {
       Core:
-        "Production-grade systems designed end-to-end with focus on architecture, scalability and long-term maintainability.",
+        "Large personal or academic projects where I implemented core functionality and worked with application structure.",
       Contribution:
-        "Team and open-source work inside existing codebases and real business constraints.",
+        "Commercial and team projects where I worked within existing codebases and business requirements.",
       Pet:
-        "Exploration projects for learning, experimentation and tooling.",
+        "Side projects created for learning, experimentation, and improving practical skills.",
       Legacy:
-        "Early-stage projects showcasing foundational engineering skills.",
+        "Earlier projects demonstrating basic frontend and backend concepts.",
     },
     items: [
-      // ---------- CORE ----------
       {
         id: 1,
         category: "Core",
         title: "Orbis — Real-Time Communication Platform (Diploma)",
         description:
-          "Designed and implemented a modular real-time communication platform with private channels, role-based access control, moderation workflows, and distributed services. Focused on scalability, clean architecture, and long-term maintainability.",
+          "Developed a real-time communication platform with private channels, role-based access, and moderation features. Worked on both frontend and backend parts, focusing on modular structure and stable data flow.",
         tech: [
           "React",
           "Next.js",
@@ -56,133 +45,123 @@ export const ProjectsData: Record<Language, ProjectsDict> = {
           "Redis",
           "PostgreSQL",
           "Socket.IO",
-          "Prisma",
-          "FSD Architecture",
+          "FSD",
         ],
         link: "https://github.com/FiaLDI/Orbis-Diplom",
+        isPrivate: false,
       },
       {
         id: 2,
         category: "Core",
         title: "Orbis Game — Sci-Fi Survival (Unity)",
         description:
-          "Architected core gameplay systems including abilities, stats, buffs, quests, world generation, and streaming. Optimized rendering and spawning pipelines using GPU instancing and custom data models.",
+          "Implemented gameplay systems such as abilities, stats, buffs, quests, and world generation. Worked on performance improvements related to rendering and object spawning.",
         tech: [
           "Unity",
           "C#",
           "FishNet",
           "ScriptableObjects",
           "GPU Instancing",
-          "Gameplay Systems",
         ],
+        link: "https://github.com/FiaLDI/Project-Terraform",
+        isPrivate: false,
       },
 
-      // ---------- CONTRIBUTION ----------
       {
         id: 3,
         category: "Contribution",
         title: "singlepagestartup — Contributor",
         description:
-          "Implemented centralized HTTP error handling and improved paginated search in the admin panel. Contributed production-quality code to a live SaaS product.",
+          "Implemented centralized HTTP error handling and improved search pagination in the admin panel. Worked within an existing production codebase.",
         tech: ["React", "Next.js", "TypeScript"],
         link: "https://github.com/singlepagestartup/singlepagestartup",
+        isPrivate: false,
       },
       {
         id: 4,
         category: "Contribution",
         title: "Kultfond RF (Private Project)",
         description:
-          "Delivered responsive UI improvements and optimized layout for mobile devices across a live production website.",
+          "Worked on responsive UI improvements and layout adjustments for mobile devices on a production website.",
         tech: ["React", "Next.js", "TailwindCSS"],
+        isPrivate: true,
       },
       {
         id: 5,
         category: "Contribution",
         title: "business.zapaha.net (Private Project)",
         description:
-          "Enhanced UX and implemented adaptive layouts, ensuring consistent rendering across device groups.",
+          "Improved user interface and implemented adaptive layouts to support different screen sizes.",
         tech: ["React", "Next.js", "TailwindCSS"],
+        isPrivate: true,
       },
       {
         id: 6,
         category: "Contribution",
         title: "didigallery.com (Private Project)",
         description:
-          "Developed new functional UI blocks and optimized responsive behavior based on real business requirements.",
+          "Developed new UI components and adjusted responsive behavior based on business requirements.",
         tech: ["React", "Next.js", "TailwindCSS"],
+        isPrivate: true,
       },
 
-      // ---------- PET ----------
       {
         id: 7,
         category: "Pet",
         title: "Markdown Editor — Tauri Desktop App",
         description:
-          "Cross-platform Markdown editor built with Next.js and Rust (Tauri). Designed for speed, portability, and extensibility.",
+          "Built a cross-platform Markdown editor using Next.js and Tauri. Focused on basic desktop integration, performance, and usability.",
         tech: ["Next.js", "Tauri", "Rust", "TypeScript"],
         link: "https://github.com/FiaLDI/Markdown-Editor",
       },
       {
         id: 8,
         category: "Pet",
-        title: "Project Terraform (Unity)",
-        description:
-          "Implemented a feature-sliced architecture for gameplay systems including stats, abilities, and buffs. Focused on maintainability and modularity.",
-        tech: ["Unity", "C#", "FSD", "Gameplay Systems"],
-      },
-      {
-        id: 9,
-        category: "Pet",
         title: "PostCreator — Automated Post Generator",
         description:
-          "Production-ready tool for generating structured posts based on user prompts. Includes custom UI, local storage, and animated flows.",
+          "Created a web tool for generating structured posts. Implemented UI logic, animations, and local data storage.",
         tech: [
           "React",
           "Next.js",
           "Zustand",
           "TailwindCSS",
           "Framer Motion",
-          "PostgreSQL",
         ],
         link: "https://github.com/FiaLDI/PostCreator",
       },
 
-      // ---------- LEGACY ----------
       {
-        id: 10,
+        id: 9,
         category: "Legacy",
         title: "TaskManager",
         description:
-          "Frontend client for interacting with a JSON-based backend. Implemented CRUD operations and data transformation pipelines.",
+          "Frontend application for interacting with a JSON-based backend. Implemented CRUD operations and basic data transformations.",
         tech: ["React", "Next.js", "Redux", "Tailwind", "TypeScript"],
         link: "https://github.com/FiaLDI/TaskManager",
       },
       {
-        id: 11,
+        id: 10,
         category: "Legacy",
         title: "Voice Chat — WebRTC Audio Chat",
         description:
-          "Minimal WebRTC audio application with a custom signaling server. Demonstrates understanding of real-time media fundamentals.",
+          "Simple WebRTC audio chat application with a custom signaling server. Demonstrates understanding of real-time communication basics.",
         tech: ["JavaScript", "WebRTC", "Node.js", "Express"],
         link: "https://github.com/FiaLDI/voice-chat",
       },
     ],
   },
 
-  /* ================================ */
-  /* RU */
-  /* ================================ */
   ru: {
     title: "Проекты",
     categoriesMeta: {
       Core:
-        "Production-ready системы, спроектированные целиком с упором на архитектуру, масштабируемость и долгосрочную поддержку.",
+        "Крупные учебные и личные проекты, где я реализовывал основную функциональность и структуру приложения.",
       Contribution:
-        "Командная и open-source разработка в рамках существующих кодовых баз и бизнес-ограничений.",
+        "Коммерческие и командные проекты с работой в существующих кодовых базах и бизнес-требованиях.",
       Pet:
-        "Исследовательские проекты для обучения, экспериментов и создания инструментов.",
+        "Pet-проекты для обучения, экспериментов и прокачки практических навыков.",
       Legacy:
-        "Ранние проекты, демонстрирующие базовые инженерные навыки.",
+        "Ранние проекты, демонстрирующие базовые frontend и backend навыки.",
     },
     items: [
       {
@@ -190,7 +169,7 @@ export const ProjectsData: Record<Language, ProjectsDict> = {
         category: "Core",
         title: "Orbis — платформа real-time коммуникации (Диплом)",
         description:
-          "Спроектировал и реализовал модульную платформу реального времени с приватными каналами, ролевым доступом, системой модерации и распределёнными сервисами.",
+          "Разработал платформу реального времени с приватными каналами, ролевым доступом и функциями модерации. Работал с frontend- и backend-частями, уделяя внимание модульной структуре.",
         tech: [
           "React",
           "Next.js",
@@ -199,58 +178,63 @@ export const ProjectsData: Record<Language, ProjectsDict> = {
           "PostgreSQL",
           "Socket.IO",
           "Prisma",
-          "FSD Architecture",
+          "FSD",
         ],
         link: "https://github.com/FiaLDI/Orbis-Diplom",
+        isPrivate: false,
       },
       {
         id: 2,
         category: "Core",
         title: "Orbis Game — Sci-Fi Survival (Unity)",
         description:
-          "Спроектировал ключевые игровые системы: способности, характеристики, баффы, квесты, генерацию мира и стриминг контента. Оптимизировал рендеринг с использованием GPU instancing.",
+          "Реализовал игровые системы: способности, характеристики, баффы, квесты и генерацию мира. Работал над оптимизацией рендеринга и спавна объектов.",
         tech: [
           "Unity",
           "C#",
           "FishNet",
           "ScriptableObjects",
           "GPU Instancing",
-          "Gameplay Systems",
         ],
+        link: "https://github.com/FiaLDI/Project-Terraform",
+        isPrivate: false,
       },
-
       {
         id: 3,
         category: "Contribution",
         title: "singlepagestartup — вклад в проект",
         description:
-          "Реализовал централизованную обработку HTTP-ошибок и улучшил пагинацию поиска в админ-панели SaaS-продукта.",
+          "Реализовал централизованную обработку HTTP-ошибок и улучшил пагинацию поиска в админ-панели в рамках существующего production-кода.",
         tech: ["React", "Next.js", "TypeScript"],
         link: "https://github.com/singlepagestartup/singlepagestartup",
+        isPrivate: false,
       },
       {
         id: 4,
         category: "Contribution",
         title: "Kultfond RF (частный проект)",
         description:
-          "Реализовал адаптивные UI-улучшения и оптимизацию верстки под мобильные устройства.",
+          "Работал над адаптивной версткой и улучшениями UI для мобильных устройств.",
         tech: ["React", "Next.js", "TailwindCSS"],
+        isPrivate: true,
       },
       {
         id: 5,
         category: "Contribution",
         title: "business.zapaha.net (частный проект)",
         description:
-          "Улучшил UX и реализовал адаптивные макеты для разных типов устройств.",
+          "Улучшал пользовательский интерфейс и реализовывал адаптивные макеты под разные экраны.",
         tech: ["React", "Next.js", "TailwindCSS"],
+        isPrivate: true,
       },
       {
         id: 6,
         category: "Contribution",
         title: "didigallery.com (частный проект)",
         description:
-          "Разработал новые UI-блоки и оптимизировал адаптивное поведение интерфейса.",
+          "Разрабатывал новые UI-компоненты и настраивал адаптивное поведение интерфейса.",
         tech: ["React", "Next.js", "TailwindCSS"],
+        isPrivate: true,
       },
 
       {
@@ -258,52 +242,47 @@ export const ProjectsData: Record<Language, ProjectsDict> = {
         category: "Pet",
         title: "Markdown Editor — desktop-приложение (Tauri)",
         description:
-          "Кроссплатформенный Markdown-редактор на Next.js и Rust (Tauri), ориентированный на скорость и расширяемость.",
+          "Кроссплатформенный Markdown-редактор на Next.js и Tauri с базовой desktop-интеграцией и упором на удобство использования.",
         tech: ["Next.js", "Tauri", "Rust", "TypeScript"],
         link: "https://github.com/FiaLDI/Markdown-Editor",
+        isPrivate: false,
       },
       {
         id: 8,
         category: "Pet",
-        title: "Project Terraform (Unity)",
-        description:
-          "Реализовал feature-sliced архитектуру игровых систем: характеристики, способности и баффы.",
-        tech: ["Unity", "C#", "FSD", "Gameplay Systems"],
-      },
-      {
-        id: 9,
-        category: "Pet",
         title: "PostCreator — генератор постов",
         description:
-          "Инструмент для автоматической генерации структурированных постов. Включает кастомный UI, localStorage и анимации.",
+          "Веб-инструмент для генерации структурированных постов с UI-логикой, анимациями и локальным хранением данных.",
         tech: [
           "React",
           "Next.js",
           "Zustand",
           "TailwindCSS",
           "Framer Motion",
-          "PostgreSQL",
         ],
         link: "https://github.com/FiaLDI/PostCreator",
+        isPrivate: false,
       },
 
       {
-        id: 10,
+        id: 9,
         category: "Legacy",
         title: "TaskManager",
         description:
-          "Frontend-клиент для работы с JSON backend. Реализованы CRUD-операции и трансформация данных.",
+          "Frontend-приложение для работы с JSON backend. Реализованы CRUD-операции и базовая обработка данных.",
         tech: ["React", "Next.js", "Redux", "Tailwind", "TypeScript"],
         link: "https://github.com/FiaLDI/TaskManager",
+        isPrivate: false,
       },
       {
-        id: 11,
+        id: 10,
         category: "Legacy",
         title: "Voice Chat — WebRTC аудиочат",
         description:
-          "Минимальное WebRTC-приложение с кастомным signaling-сервером для peer-to-peer аудиосвязи.",
+          "Простое WebRTC-приложение с кастомным signaling-сервером для peer-to-peer аудиосвязи.",
         tech: ["JavaScript", "WebRTC", "Node.js", "Express"],
         link: "https://github.com/FiaLDI/voice-chat",
+        isPrivate: false,
       },
     ],
   },

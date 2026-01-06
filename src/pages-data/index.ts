@@ -1,7 +1,7 @@
+import { SkillsData } from "@/entities/skill/model/skills";
 import { ContactData } from "./contact";
 import { HeroData } from "./hero";
 import { ProjectsData } from "./projects";
-import { SkillsData } from "./skills";
 import { TimelineData } from "./timeline";
 
 export const dictionaries = {

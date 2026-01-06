@@ -5,7 +5,7 @@ import { motion, useMotionValue, useTransform } from "framer-motion";
 import { useEffect, useContext } from "react";
 import { useMounted } from "@/shared/utils/useMounted";
 import { TypingText } from "@/shared/utils/TypingText";
-import { FullpageContext } from "@/shared/lib/scroll-to-section/FullpageContext";
+import { FullpageContext } from "@/features/custom-scroll/lib";
 import { HeroDict } from "@/pages-data/hero";
 import { useDict } from "@/shared/utils/useDict";
 
@@ -42,10 +42,10 @@ export const Hero = ({ heroDict }: HeroProps) => {
       <div className="relative flex h-full items-center justify-between gap-16 text-white">
 
         {/* LEFT */}
-        <div className="flex flex-col gap-8 max-w-xl">
+        <div className="flex flex-col gap-8 lg:gap-8 max-w-xl">
 
           <div className="relative inline-block">
-            <h1 className="text-5xl font-semibold tracking-tight leading-tight">
+            <h1 className="text-3xl lg:text-5xl tracking-tight leading-tight">
               {hero.title}
             </h1>
 
@@ -57,36 +57,38 @@ export const Hero = ({ heroDict }: HeroProps) => {
             />
           </div>
 
-          <p className="text-lg text-neutral-300">
+          <p className="lg:text-lg text-neutral-300">
             {hero.subTitle}
           </p>
 
-          <p className="text-xl text-neutral-400 min-h-12">
-            {mounted ? <TypingText text={hero.value} /> : hero.value}
+          <p className="lg:text-xl text-neutral-400 min-h-12">
+            {hero.value}
           </p>
 
-          <div className="flex flex-wrap gap-3">
+          <div className="flex flex-col gap-3">
             {hero.highlights.map((val, idx) => (
-              <span
+              <div
                 key={idx}
-                className="px-4 py-1.5 rounded-full border border-neutral-700 bg-neutral-900/40 text-sm text-neutral-200"
+                className="flex items-start gap-3 text-sm text-neutral-300"
               >
-                {val}
-              </span>
+                <span className="mt-2 h-1.5 w-1.5 rounded-full bg-indigo-400 shrink-0" />
+                <span className="leading-relaxed">{val}</span>
+              </div>
             ))}
           </div>
 
-          <div className="flex gap-4 mt-4">
+          <div className="flex gap-4">
             <button
-              onClick={() => setIndex?.(2)}
-              className="px-6 py-2.5 rounded-xl bg-indigo-500/90 hover:bg-indigo-500 text-sm font-medium transition"
+              className="w-full lg:w-fit relative px-6 py-3 rounded-xl bg-indigo-500 text-sm font-medium
+                        shadow-[0_0_30px_-8px_rgba(99,102,241,0.8)]
+                        hover:shadow-[0_0_40px_-6px_rgba(99,102,241,1)]
+                        transition cursor-pointer"
             >
               {hero.ctaPrimary}
             </button>
-
             <button
               onClick={() => setIndex?.(1)}
-              className="px-6 py-2.5 rounded-xl border border-neutral-700 bg-neutral-900/40 text-sm font-medium hover:bg-neutral-800 transition"
+              className="w-full lg:w-fit px-6 py-2.5 rounded-xl border border-neutral-700 bg-neutral-900/40 text-sm font-medium hover:bg-neutral-800 transition cursor-pointer"
             >
               {hero.ctaSkills}
             </button>
@@ -101,8 +103,8 @@ export const Hero = ({ heroDict }: HeroProps) => {
           <div className="absolute -inset-12 rounded-full bg-indigo-500/20 blur-[140px]" />
           <Image
             src={hero.image}
-            width={420}
-            height={420}
+            width={320}
+            height={320}
             alt={hero.title}
             className="relative z-10 rounded-2xl border border-neutral-800 bg-neutral-900/40 backdrop-blur"
           />

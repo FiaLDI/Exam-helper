@@ -1,1 +1,1 @@
-export * from "./Component"
+export { Skills } from "./ui/Skills";

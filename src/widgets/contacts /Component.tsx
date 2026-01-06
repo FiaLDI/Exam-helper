@@ -2,39 +2,36 @@
 
 import { motion, Variants } from "framer-motion";
 import { useContext } from "react";
-import { FullpageContext } from "@/shared/lib/scroll-to-section/FullpageContext";
+import { FullpageContext } from "@/features/custom-scroll/lib";
 import { CONTACT_STATIC, ContactDict } from "@/pages-data/contact";
 import { useMounted } from "@/shared/utils/useMounted";
 import { useDict } from "@/shared/utils/useDict";
+import { IComponentProps } from "./interface";
 
 const CONTACT_INDEX = 4;
 
-const EASE_OUT: [number, number, number, number] = [0.16, 1, 0.3, 1];
+const EASE_OUT: [number, number, number, number] = [0.7, 1, 0.8, 1];
 
 const container: Variants = {
   hidden: {},
   visible: {
     transition: {
-      staggerChildren: 0.12,
-      delayChildren: 0.2,
+      staggerChildren: 0.72,
+      delayChildren: 0.8,
     },
   },
 };
 
 const item: Variants = {
-  hidden: { opacity: 0, y: 24 },
+  hidden: { opacity: 0, x: 240 },
   visible: {
     opacity: 1,
-    y: 0,
-    transition: { duration: 0.45, ease: EASE_OUT },
+    x: 0,
+    transition: { duration: 1.2, ease: EASE_OUT },
   },
 };
 
-type ContactsProps = {
-  contactsDict: ContactDict;
-};
-
-export const Contacts = ({ contactsDict }: ContactsProps) => {
+export const Contacts = ({ contactsDict }: IComponentProps) => {
   const ctx = useContext(FullpageContext);
   const mounted = useMounted();
 

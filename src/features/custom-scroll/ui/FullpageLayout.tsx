@@ -1,12 +1,12 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { ReactNode, useEffect, useRef, useState } from "react";
-import { useFullpage } from "./useFullpage";
-import { FullpageContext } from "./FullpageContext";
+import { ReactNode, useEffect, useRef } from "react";
+import { useFullpage } from "../lib";
+import { FullpageContext } from "../lib";
 import { FullpageProgress } from "./FullpageProgress";
 import { LanguageSwitcher } from "@/features/language-switcher/ui/LanguageSwitcher";
-import { AnimatedBackground } from "@/features/animated-background/ui/AnimatedBackground";
+import { Component as AnimatedBackground } from "@/features/animated-background/ui";
 
 /* ---------------- CONFIG ---------------- */
 
@@ -34,12 +34,10 @@ function canScroll(el: HTMLElement, delta: number) {
 
   if (scrollHeight <= clientHeight) return false;
 
-  // delta > 0 — пытаемся скроллить вниз
   if (delta > 0) {
     return scrollTop + clientHeight < scrollHeight - 1;
   }
 
-  // delta < 0 — пытаемся скроллить вверх
   if (delta < 0) {
     return scrollTop > 0;
   }
@@ -58,7 +56,6 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
     typeof window !== "undefined" &&
     window.matchMedia("(pointer: coarse)").matches;
 
-  const [lockScroll, setLockScroll] = useState(false);
   const lastWheelTs = useRef(0);
   const max = sections.length - 1;
 
@@ -69,10 +66,12 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
     const onWheel = (e: WheelEvent) => {
       const scrollable = getScrollableParent(e.target);
 
-      // если есть scrollable и он может скроллить — даём ему
-      if (scrollable && canScroll(scrollable, e.deltaY)) return;
+      // если внутри scrollable и он может скроллить — даём ему скроллить
+      if (scrollable && canScroll(scrollable, e.deltaY)) {
+        e.stopPropagation();
+        return;
+      }
 
-      if (lockScroll) return;
       if (Math.abs(e.deltaY) < WHEEL_THRESHOLD) return;
 
       const now = Date.now();
@@ -87,7 +86,7 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
 
     window.addEventListener("wheel", onWheel, { passive: false });
     return () => window.removeEventListener("wheel", onWheel);
-  }, [index, max, lockScroll, setIndex, isMobile]);
+  }, [index, max, setIndex, isMobile]);
 
   /* ---------- MOBILE SWIPE ---------- */
   useEffect(() => {
@@ -107,14 +106,11 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
 
       const scrollable = getScrollableParent(e.target);
 
-      // если внутри scrollable и он может скроллить в сторону жеста — не листаем секцию
-      // свайп вверх (delta < 0) => scroll вниз
-      // свайп вниз (delta > 0) => scroll вверх
+      // если внутри scrollable и он может скроллить — не листаем секцию
       if (scrollable && canScroll(scrollable, delta < 0 ? 1 : -1)) {
         return;
       }
 
-      // иначе — fullpage
       if (delta < 0 && index < max) setIndex(index + 1);
       if (delta > 0 && index > 0) setIndex(index - 1);
     };
@@ -134,14 +130,16 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
     <FullpageContext.Provider
       value={{
         index,
+        setIndex,
         progress,
         projectsProgress,
-        setIndex,
-        lockScroll,
-        setLockScroll,
       }}
     >
-      <AnimatedBackground />
+      <AnimatedBackground
+        index={index}
+        progress={progress}
+        projectsProgress={projectsProgress}
+      />
 
       <div className="w-full h-screen overflow-hidden relative z-10">
         <FullpageProgress />
@@ -150,12 +148,12 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
         <AnimatePresence mode="wait">
           <motion.div
             key={index}
-            className="absolute inset-0"
-            drag={isMobile ? false : "y"}
+            className="absolute inset-0 touch-pan-y lg:touch-none"
+            drag={"y"}
             dragConstraints={{ top: 0, bottom: 0 }}
             dragElastic={0.15}
             onDragEnd={(_, info) => {
-              if (isMobile || lockScroll) return;
+              if (isMobile) return;
 
               if (info.offset.y < -SWIPE_THRESHOLD && index < max) {
                 setIndex(index + 1);

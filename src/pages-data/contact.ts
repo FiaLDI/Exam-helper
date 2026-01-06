@@ -16,7 +16,7 @@ export const CONTACT_STATIC = {
 
 export const ContactData: Record<Language, ContactDict> = {
   en: {
-    title: "Let’s get in touch",
+    title: "Contacts",
     subtitle:
       "Open for collaboration, freelance projects, and interesting ideas.",
     messageTitle: "Send me a message",
@@ -24,7 +24,7 @@ export const ContactData: Record<Language, ContactDict> = {
     cta: "Send",
   },
   ru: {
-    title: "Давайте свяжемся",
+    title: "Контакты",
     subtitle:
       "Открыт к сотрудничеству, фриланс-проектам и интересным идеям.",
     messageTitle: "Написать сообщение",
