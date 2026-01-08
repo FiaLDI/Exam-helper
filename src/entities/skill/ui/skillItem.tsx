@@ -2,8 +2,6 @@
 import { motion, useScroll, useTransform } from "framer-motion";
 import { SkillItemType } from "../types/skills.types";
 
-const EASE: [number, number, number, number] = [0.16, 1, 0.3, 1];
-
 export const SkillItem = ({item}: {item: SkillItemType}) => 
     (
         <>

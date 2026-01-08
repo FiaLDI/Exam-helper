@@ -1,22 +1,5 @@
 import { Language } from "@/features/language-switcher/model/types";
-
-export type ProjectCategory = "Core" | "Contribution" | "Pet" | "Legacy";
-
-export interface ProjectItem {
-  id: number;
-  category: ProjectCategory;
-  title: string;
-  description: string;
-  tech: string[];
-  link?: string;
-  isPrivate?: boolean;
-}
-
-export type ProjectsDict = {
-  title: string;
-  categoriesMeta: Record<ProjectCategory, string>;
-  items: ProjectItem[];
-};
+import { ProjectsDict } from "../types/project.types";
 
 export const ProjectsData: Record<Language, ProjectsDict> = {
   en: {

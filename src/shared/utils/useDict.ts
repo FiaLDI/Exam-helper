@@ -1,4 +1,3 @@
-// shared/i18n/useDict.ts
 "use client";
 
 import { dictionaries, DictionaryKey } from "@/pages-data";
