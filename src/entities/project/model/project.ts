@@ -1,4 +1,5 @@
-import { Language } from "@/features/language-switcher/model/types";
+
+import { Language } from "@/shared/lib/language";
 import { ProjectsDict } from "../types/project.types";
 
 export const ProjectsData: Record<Language, ProjectsDict> = {

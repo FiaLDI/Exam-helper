@@ -1,8 +1,8 @@
-import { SkillsData } from "@/entities/skill/model/skills";
+import { SkillsData } from "@/entities/skill";
 import { HeroData } from "./hero";
-import { TimelineData } from "./timeline";
-import { ContactData } from "@/entities/contact/model/contact";
+import { ContactData } from "@/entities/contact";
 import { ProjectsData } from "@/entities/project";
+import { TimelineData } from "@/entities/timeline";
 
 export const dictionaries = {
   hero: HeroData,
@@ -11,6 +11,5 @@ export const dictionaries = {
   projects: ProjectsData,
   timeline: TimelineData,
 };
-
 
 export type DictionaryKey = keyof typeof dictionaries;

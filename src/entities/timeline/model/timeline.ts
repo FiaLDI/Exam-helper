@@ -1,24 +1,6 @@
-import { Language } from "@/features/language-switcher/model/types";
 
-/* ---------------------------------- */
-/* TYPES */
-/* ---------------------------------- */
-
-export interface TimelineItem {
-  id: number;
-  title: string;
-  subtitle?: string;
-  description?: string;
-}
-
-export type TimelineDict = {
-  title: string;
-  items: TimelineItem[];
-};
-
-/* ---------------------------------- */
-/* TIMELINE DATA */
-/* ---------------------------------- */
+import { Language } from "@/shared/lib/language";
+import { TimelineDict } from "../types/timeline.types";
 
 export const TimelineData: Record<Language, TimelineDict> = {
   en: {

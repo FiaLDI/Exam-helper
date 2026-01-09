@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { Language } from "./types";
+import { Language } from "@/shared/lib/language";
 
 type LanguageStore = {
   lang: Language;

@@ -1,9 +1,8 @@
 "use client";
 
 import { useRef, useState, useEffect } from "react";
-import { TimelineItem as TimelineItemComponent } from "./TimelineItem";
+import { TimelineDict, TimelineItem as TimelineItemComponent } from "@/entities/timeline";
 import { useMounted } from "@/shared/utils/useMounted";
-import { TimelineDict } from "@/pages-data/timeline";
 import { useDict } from "@/shared/utils/useDict";
 
 type TimeLineProps = {
@@ -18,7 +17,7 @@ export const TimeLine = ({ timelineDict }: TimeLineProps) => {
   const mounted = useMounted();
 
   const clientDict = useDict("timeline");
-  const data = mounted ? clientDict : timelineDict;
+  const data : TimelineDict = mounted ? clientDict : timelineDict;
 
   const total = data.items.length;
 
