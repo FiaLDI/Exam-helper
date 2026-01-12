@@ -2,9 +2,11 @@
 
 import { motion } from "framer-motion";
 import { useRef, useState } from "react";
-import { useMounted } from "@/shared/utils/useMounted";
-import { useDict } from "@/shared/utils/useDict";
-import { ProjectItem, ProjectCategory, ProjectsDict } from "@/entities/project";
+import {
+  ProjectItem,
+  ProjectCategory,
+} from "@/entities/project";
+import { useDict } from "@/shared/lib";
 
 const HEAT: Record<ProjectCategory, string> = {
   Core: "from-indigo-500/20",
@@ -13,26 +15,15 @@ const HEAT: Record<ProjectCategory, string> = {
   Legacy: "from-neutral-500/5",
 };
 
-type ProjectListProps = {
-  projectsDict: ProjectsDict; // SSR
-};
-
-export const ProjectList = ({ projectsDict }: ProjectListProps) => {
+export const ProjectList = () => {
   const containerRef = useRef<HTMLElement>(null);
   const [activeCategory, setActiveCategory] =
     useState<ProjectCategory | null>(null);
 
-  const mounted = useMounted();
-
-  // CSR словарь
-  const clientDict = useDict("projects");
-
-  // SSR → CSR
-  const data : ProjectsDict = mounted ? clientDict : projectsDict;
+  const data = useDict("projects");
 
   const grouped = data.items.reduce((acc, project) => {
-    acc[project.category] = acc[project.category] || [];
-    acc[project.category].push(project);
+    (acc[project.category] ??= []).push(project);
     return acc;
   }, {} as Record<ProjectCategory, typeof data.items>);
 
@@ -43,14 +34,17 @@ export const ProjectList = ({ projectsDict }: ProjectListProps) => {
       ref={containerRef}
       data-scrollable
       style={{ WebkitOverflowScrolling: "touch" }}
-      className="h-screen no-scrollbar relative overflow-y-auto max-w-7xl mx-auto w-full p-5 pt-15 text-white"
+      className="h-screen no-scrollbar relative overflow-y-auto
+                 max-w-7xl mx-auto w-full p-5 pt-15 text-white"
     >
       <h2 className="text-3xl font-bold p-5">
         {data.title}
       </h2>
 
       {/* CATEGORY RAIL */}
-      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 z-20 flex gap-4 bg-black/40 backdrop-blur-md rounded-xl px-4 py-2">
+      <div className="fixed bottom-16 left-1/2 -translate-x-1/2 z-20
+                      flex gap-4 bg-black/40 backdrop-blur-md
+                      rounded-xl px-4 py-2">
         {categories.map((cat) => (
           <button
             key={cat}
@@ -59,7 +53,7 @@ export const ProjectList = ({ projectsDict }: ProjectListProps) => {
                 .getElementById(`cat-${cat}`)
                 ?.scrollIntoView({ behavior: "smooth" })
             }
-            className={`text-sm ${
+            className={`text-sm transition ${
               activeCategory === cat
                 ? "text-indigo-400"
                 : "text-neutral-400 hover:text-neutral-200"
@@ -70,7 +64,6 @@ export const ProjectList = ({ projectsDict }: ProjectListProps) => {
         ))}
       </div>
 
-      {/* CATEGORIES */}
       <div className="space-y-14 p-5 pb-20">
         {categories.map((category) => (
           <motion.section
@@ -83,19 +76,28 @@ export const ProjectList = ({ projectsDict }: ProjectListProps) => {
             className="relative"
           >
             <div
-              className={`-z-10 absolute -inset-10 rounded-3xl bg-gradient-to-br ${HEAT[category]} to-transparent blur-2xl`}
+              className={`-z-10 absolute -inset-10 rounded-3xl
+                          bg-gradient-to-br ${HEAT[category]}
+                          to-transparent blur-2xl`}
             />
 
             <div className="relative z-10 mb-8">
-              <h3 className="text-2xl font-semibold mb-2">{category}</h3>
+              <h3 className="text-2xl font-semibold mb-2">
+                {category}
+              </h3>
               <p className="text-sm text-neutral-400 max-w-3xl">
                 {data.categoriesMeta[category]}
               </p>
             </div>
 
             <div className="grid md:grid-cols-2 gap-6">
-  {grouped[category].map((project) => <ProjectItem key={`project-${project.id}`} project={project} />)}
-</div>
+              {grouped[category].map((project) => (
+                <ProjectItem
+                  key={`project-${project.id}`}
+                  project={project}
+                />
+              ))}
+            </div>
           </motion.section>
         ))}
       </div>

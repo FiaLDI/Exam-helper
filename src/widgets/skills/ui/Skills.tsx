@@ -1,16 +1,10 @@
 "use client";
 
-import { useRef } from "react";
-import { useMounted } from "@/shared/utils/useMounted";
-import { useDict } from "@/shared/utils/useDict";
-import { SkillsDict } from "@/entities/skill";
+import { useDict } from "@/shared/lib";
 import { SkillGroup } from "./SkillGroup";
 
-export const Skills = ({ skillsDict }: {skillsDict: SkillsDict;}) => {
-  const mounted = useMounted();
-
-  const clientDict = useDict("skills");
-  const data: SkillsDict = mounted ? clientDict : skillsDict;
+export const Skills = () => {
+  const data = useDict("skills");
 
   return (
     <section className="h-screen w-full">
@@ -36,7 +30,7 @@ export const Skills = ({ skillsDict }: {skillsDict: SkillsDict;}) => {
         <div className="space-y-10 relative z-10">
           {data.groups.map((group, idx) => (
             <SkillGroup
-              key={`skills-${idx}-${group.description}`} 
+              key={`skills-${idx}-${group.description}`}
               group={group}
             />
           ))}
@@ -45,4 +39,3 @@ export const Skills = ({ skillsDict }: {skillsDict: SkillsDict;}) => {
     </section>
   );
 };
-

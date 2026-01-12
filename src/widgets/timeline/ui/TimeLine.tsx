@@ -1,25 +1,18 @@
 "use client";
 
 import { useRef, useState } from "react";
+
 import {
-  TimelineDict,
   TimelineItem as TimelineItemComponent,
 } from "@/entities/timeline";
-import { useMounted } from "@/shared/utils/useMounted";
-import { useDict } from "@/shared/utils/useDict";
+import { useDict } from "@/shared/lib";
 import { useSlowScroll } from "@/shared/hooks/scroll";
 
-type TimeLineProps = {
-  timelineDict: TimelineDict;
-};
-
-export const TimeLine = ({ timelineDict }: TimeLineProps) => {
+export const TimeLine = () => {
   const containerRef = useRef<HTMLElement>(null);
   const [activeId, setActiveId] = useState<number | null>(null);
-  const mounted = useMounted();
 
-  const clientDict = useDict("timeline");
-  const data: TimelineDict = mounted ? clientDict : timelineDict;
+  const data = useDict("timeline");
 
   const total = data.items.length;
 
@@ -28,7 +21,6 @@ export const TimeLine = ({ timelineDict }: TimeLineProps) => {
       ? ((activeId - 1) / (total - 1)) * 100
       : 0;
 
-  /* ---------- SLOW SCROLL ---------- */
   useSlowScroll(containerRef, { speed: 0.2 });
 
   return (
@@ -36,9 +28,13 @@ export const TimeLine = ({ timelineDict }: TimeLineProps) => {
       ref={containerRef}
       data-scrollable
       style={{ WebkitOverflowScrolling: "touch" }}
-      className="h-screen no-scrollbar overflow-y-auto max-w-7xl mx-auto w-full p-5 pt-10 pb-20 relative"
+      className="h-screen no-scrollbar overflow-y-auto
+                 max-w-7xl mx-auto w-full
+                 p-5 pt-10 pb-20 relative"
     >
-      <h2 className="text-3xl font-bold border-b-2 border-neutral-700/70 text-white w-full p-5">
+      <h2 className="text-3xl font-bold
+                     border-b-2 border-neutral-700/70
+                     text-white w-full p-5">
         {data.title}
       </h2>
 

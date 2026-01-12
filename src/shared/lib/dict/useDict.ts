@@ -1,10 +1,12 @@
 "use client";
 
-import { dictionaries, DictionaryKey } from "./Dictionaries";
+import { dictionaries, DictionaryKey } from "./dictionaries";
 import { useLanguageStore } from "@/features/language-switcher/model/useLanguageStore";
 import { Language } from "@/shared/lib/language";
 
-export function useDict<K extends DictionaryKey>(key: K) {
+export function useDict<K extends DictionaryKey>(
+  key: K
+): (typeof dictionaries)[K][Language] {
   const lang = useLanguageStore((s) => s.lang);
-  return dictionaries[key][lang] as (typeof dictionaries)[K][Language];
+  return dictionaries[key][lang];
 }

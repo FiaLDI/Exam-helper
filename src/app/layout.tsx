@@ -1,5 +1,6 @@
 import { Roboto } from "next/font/google";
 import "./globals.css";
+
 import { LanguageInit } from "@/features/language-switcher/ui/LanguageInit";
 import { getLang } from "@/shared/utils/server/getLang";
 import { ModalContainer } from "@/features/open-modal";
@@ -20,7 +21,9 @@ export default async function RootLayout({
     <html lang={lang}>
       <body className={`${roboto.variable} antialiased bg-[#323232]`}>
         <LanguageInit lang={lang} />
+
         {children}
+
         <ModalContainer />
       </body>
     </html>

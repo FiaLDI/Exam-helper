@@ -2,13 +2,17 @@
 
 import { motion, Variants } from "framer-motion";
 import { useContext } from "react";
+
 import { FullpageContext } from "@/features/custom-scroll/lib";
-import { useMounted } from "@/shared/utils/useMounted";
-import { useDict } from "@/shared/utils/useDict";
-import { CONTACT_STATIC, ContactDict } from "@/entities/contact/model/contact";
+import { useDict } from "@/shared/lib";
+import {
+  CONTACT_STATIC,
+} from "@/entities/contact/model/contact";
 import { ContactItem } from "@/entities/contact";
 
 const CONTACT_INDEX = 4;
+
+/* ---------- ANIMATIONS ---------- */
 
 const container: Variants = {
   hidden: {},
@@ -29,22 +33,15 @@ const item: Variants = {
   },
 };
 
-export interface IComponentProps {
-  contactsDict: ContactDict;
-};
+/* ---------- COMPONENT ---------- */
 
-export const Contacts = ({ contactsDict }: IComponentProps) => {
+export const Contacts = () => {
   const ctx = useContext(FullpageContext);
-  const clientDict = useDict("contacts");
-  const mounted = useMounted();
-
-  if (!ctx) return null;
 
   const { index } = ctx;
   const isActive = index === CONTACT_INDEX;
 
-
-  const data = mounted ? clientDict : contactsDict;
+  const data = useDict("contacts");
 
   return (
     <section className="h-screen max-w-7xl mx-auto w-full px-6">
@@ -82,9 +79,21 @@ export const Contacts = ({ contactsDict }: IComponentProps) => {
           <div className="grid md:grid-cols-2 gap-12">
             {/* CONTACT INFO */}
             <motion.div variants={item} className="space-y-6 text-neutral-300">
-              <ContactItem label="Email" value={CONTACT_STATIC.email} href={`mailto:${CONTACT_STATIC.email}`} />
-              <ContactItem label="GitHub" value={CONTACT_STATIC.github} href={CONTACT_STATIC.github} />
-              <ContactItem label="Telegram" value={CONTACT_STATIC.telegram} href={CONTACT_STATIC.telegram} />
+              <ContactItem
+                label="Email"
+                value={CONTACT_STATIC.email}
+                href={`mailto:${CONTACT_STATIC.email}`}
+              />
+              <ContactItem
+                label="GitHub"
+                value={CONTACT_STATIC.github}
+                href={CONTACT_STATIC.github}
+              />
+              <ContactItem
+                label="Telegram"
+                value={CONTACT_STATIC.telegram}
+                href={CONTACT_STATIC.telegram}
+              />
             </motion.div>
 
             {/* FORM */}
