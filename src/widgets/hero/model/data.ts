@@ -1,6 +1,4 @@
-// pages-data/hero.ts
-
-import { Language } from "@/shared/lib/language";
+import { Language } from "@/shared/lib";
 import { HeroDict } from "../types/hero.type";
 
 export const HeroData: Record<Language, HeroDict> = {

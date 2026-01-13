@@ -1,10 +1,9 @@
 
-import { Language } from "@/shared/lib/language";
+import { Language } from "@/shared/lib";
 import { TimelineDict } from "../types/timeline.types";
 
 export const TimelineData: Record<Language, TimelineDict> = {
   en: {
-    title: "Timeline",
     items: [
       {
         id: 1,
@@ -80,7 +79,6 @@ export const TimelineData: Record<Language, TimelineDict> = {
   },
 
   ru: {
-    title: "Хронология",
     items: [
       {
         id: 1,

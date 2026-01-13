@@ -1,33 +1,22 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { useRef, useState } from "react";
-import {
-  ProjectItem,
-  ProjectCategory,
-} from "@/entities/project";
-import { useDict } from "@/shared/lib";
 
-const HEAT: Record<ProjectCategory, string> = {
-  Core: "from-indigo-500/20",
-  Contribution: "from-sky-500/15",
-  Pet: "from-emerald-500/10",
-  Legacy: "from-neutral-500/5",
-};
+import { ProjectItem } from "@/entities/project";
+import { useDict } from "@/shared/lib";
+import { useProjectCategories } from "../model/useProjectCategories";
 
 export const ProjectList = () => {
-  const containerRef = useRef<HTMLElement>(null);
-  const [activeCategory, setActiveCategory] =
-    useState<ProjectCategory | null>(null);
+  const data = useDict("ProjectWidget");
+  const items = useDict("projects");
 
-  const data = useDict("projects");
-
-  const grouped = data.items.reduce((acc, project) => {
-    (acc[project.category] ??= []).push(project);
-    return acc;
-  }, {} as Record<ProjectCategory, typeof data.items>);
-
-  const categories = Object.keys(grouped) as ProjectCategory[];
+  const {
+    containerRef,
+    activeCategory,
+    setActiveCategory,
+    grouped,
+    categories,
+  } = useProjectCategories(items.items);
 
   return (
     <section
@@ -77,7 +66,12 @@ export const ProjectList = () => {
           >
             <div
               className={`-z-10 absolute -inset-10 rounded-3xl
-                          bg-gradient-to-br ${HEAT[category]}
+                          bg-gradient-to-br ${{
+                            Core: "from-indigo-500/20",
+                            Contribution: "from-sky-500/15",
+                            Pet: "from-emerald-500/10",
+                            Legacy: "from-neutral-500/5",
+                          }[category]}
                           to-transparent blur-2xl`}
             />
 
@@ -86,7 +80,7 @@ export const ProjectList = () => {
                 {category}
               </h3>
               <p className="text-sm text-neutral-400 max-w-3xl">
-                {data.categoriesMeta[category]}
+                {items.categoriesMeta[category]}
               </p>
             </div>
 

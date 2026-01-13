@@ -1,12 +1,9 @@
 
-import { Language } from "@/shared/lib/language";
-import { SkillsDict } from "../types/skills.types";
+import { Language } from "@/shared/lib";
+import { SkillsGroupDict } from "../types/skills.types";
 
-export const SkillsData: Record<Language, SkillsDict> = {
+export const SkillsGroupData: Record<Language, SkillsGroupDict> = {
   en: {
-    title: "Skills",
-    subtitle:
-      "An overview of the technologies and approaches I use in day-to-day development.",
     groups: [
       {
         level: "Primary Skills",
@@ -58,9 +55,6 @@ export const SkillsData: Record<Language, SkillsDict> = {
   },
 
   ru: {
-    title: "Навыки",
-    subtitle:
-      "Обзор технологий и подходов, которые я использую в повседневной разработке.",
     groups: [
       {
         level: "Основные навыки",

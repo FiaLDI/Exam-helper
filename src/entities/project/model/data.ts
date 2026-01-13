@@ -1,10 +1,9 @@
 
-import { Language } from "@/shared/lib/language";
+import { Language } from "@/shared/lib";
 import { ProjectsDict } from "../types/project.types";
 
 export const ProjectsData: Record<Language, ProjectsDict> = {
   en: {
-    title: "Projects",
     categoriesMeta: {
       Core:
         "Large personal or academic projects where I implemented core functionality and worked with application structure.",
@@ -136,7 +135,6 @@ export const ProjectsData: Record<Language, ProjectsDict> = {
   },
 
   ru: {
-    title: "Проекты",
     categoriesMeta: {
       Core:
         "Крупные учебные и личные проекты, где я реализовывал основную функциональность и структуру приложения.",

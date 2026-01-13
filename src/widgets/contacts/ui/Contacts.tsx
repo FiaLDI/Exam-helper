@@ -7,10 +7,9 @@ import { FullpageContext } from "@/features/custom-scroll/lib";
 import { useDict } from "@/shared/lib";
 import {
   CONTACT_STATIC,
-} from "@/entities/contact/model/contact";
+} from "@/entities/contact";
 import { ContactItem } from "@/entities/contact";
-
-const CONTACT_INDEX = 4;
+import { useInitAnimation } from "../model/useInitAnimation";
 
 /* ---------- ANIMATIONS ---------- */
 
@@ -36,12 +35,9 @@ const item: Variants = {
 /* ---------- COMPONENT ---------- */
 
 export const Contacts = () => {
-  const ctx = useContext(FullpageContext);
-
-  const { index } = ctx;
-  const isActive = index === CONTACT_INDEX;
-
   const data = useDict("contacts");
+
+  const { isActive } = useInitAnimation()
 
   return (
     <section className="h-screen max-w-7xl mx-auto w-full px-6">

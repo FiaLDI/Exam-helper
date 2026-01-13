@@ -1,5 +1,5 @@
 
-import { Language } from "@/shared/lib/language";
+import { Language } from "@/shared/lib";
 
 export type ContactDict = {
   title: string;

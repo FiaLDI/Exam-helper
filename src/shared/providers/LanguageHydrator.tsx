@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect } from "react";
-import { Language } from "@/shared/lib/language";
+import { Language } from "@/shared/lib";
 import { useLanguageStore } from "@/features/language-switcher/model/useLanguageStore";
 
 export function LanguageHydrator({ lang }: { lang: Language }) {
