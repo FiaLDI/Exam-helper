@@ -1,11 +1,11 @@
 "use client";
 
 import Image from "next/image";
-import { motion } from "framer-motion";
 import { useContext } from "react";
 
 import { FullpageContext } from "@/features/custom-scroll/lib";
 import { useDict } from "@/shared/lib";
+import { LineToRight } from "@/shared/ui/animation";
 
 export const Hero = () => {
   const { setIndex } = useContext(FullpageContext);
@@ -23,12 +23,7 @@ export const Hero = () => {
               {hero.title}
             </h1>
 
-            <motion.span
-              className="absolute left-0 -bottom-2 h-[2px] bg-indigo-400"
-              initial={{ width: 0 }}
-              animate={{ width: "100%" }}
-              transition={{ duration: 0.8, ease: "easeOut" }}
-            />
+            <LineToRight />
           </div>
 
           <p className="lg:text-lg text-neutral-300">
@@ -53,10 +48,11 @@ export const Hero = () => {
 
           <div className="flex gap-4">
             <button
+              onClick={() => setIndex?.(2)}
               className="w-full lg:w-fit px-6 py-3 rounded-xl bg-indigo-500 text-sm font-medium
                          shadow-[0_0_30px_-8px_rgba(99,102,241,0.8)]
                          hover:shadow-[0_0_40px_-6px_rgba(99,102,241,1)]
-                         transition"
+                         transition cursor-pointer"
             >
               {hero.ctaPrimary}
             </button>
@@ -65,7 +61,7 @@ export const Hero = () => {
               onClick={() => setIndex?.(1)}
               className="w-full lg:w-fit px-6 py-2.5 rounded-xl
                          border border-neutral-700 bg-neutral-900/40
-                         text-sm font-medium hover:bg-neutral-800 transition"
+                         text-sm font-medium hover:bg-neutral-800 transition cursor-pointer"
             >
               {hero.ctaSkills}
             </button>

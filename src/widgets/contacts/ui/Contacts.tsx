@@ -1,22 +1,12 @@
 "use client";
 
-import { motion, Variants } from "framer-motion";
+import { motion } from "framer-motion";
 import { useDict } from "@/shared/lib";
 import { ContactItem } from "@/entities/contact";
 import { useInitAnimation } from "../model/useInitAnimation";
 import { CONTACT_STATIC } from "../model/data";
 import { OrderAnimation } from "@/shared/ui/animation";
-
-/* ---------- ANIMATIONS ---------- */
-
-const item: Variants = {
-  hidden: { opacity: 0, x: 240 },
-  visible: {
-    opacity: 1,
-    x: 0,
-    transition: { duration: 1.2, ease: [0.7, 1, 0.8, 1] },
-  },
-};
+import { slideInRight } from "../model/animations";
 
 /* ---------- COMPONENT ---------- */
 
@@ -35,7 +25,7 @@ export const Contacts = () => {
 
         {/* CARD */}
         <motion.div
-          variants={item}
+          variants={slideInRight}
           className="relative z-10 w-full max-w-5xl rounded-3xl
                      bg-neutral-900/60 backdrop-blur-xl
                      border border-neutral-800
@@ -43,7 +33,7 @@ export const Contacts = () => {
                      p-10 text-white"
         >
           {/* HEADER */}
-          <motion.div variants={item} className="mb-10">
+          <motion.div variants={slideInRight} className="mb-10">
             <h2 className="text-4xl font-semibold tracking-tight">
               {data.title}
             </h2>
@@ -55,7 +45,7 @@ export const Contacts = () => {
           {/* CONTENT */}
           <div className="grid md:grid-cols-2 gap-12">
             {/* CONTACT INFO */}
-            <motion.div variants={item} className="space-y-6 text-neutral-300">
+            <motion.div variants={slideInRight} className="space-y-6 text-neutral-300">
               <ContactItem
                 label="Email"
                 value={CONTACT_STATIC.email}
@@ -74,7 +64,7 @@ export const Contacts = () => {
             </motion.div>
 
             {/* FORM */}
-            <motion.div variants={item}>
+            <motion.div variants={slideInRight}>
               <h3 className="text-xl font-medium mb-4">
                 {data.messageTitle}
               </h3>
