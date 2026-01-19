@@ -6,6 +6,7 @@ import { useContext } from "react";
 import { FullpageContext } from "@/features/custom-scroll/lib";
 import { useDict } from "@/shared/lib";
 import { LineToRight } from "@/shared/ui/animation";
+import { DefaultButton, PrimaryButton } from "@/shared/ui/button";
 
 export const Hero = () => {
   const { setIndex } = useContext(FullpageContext);
@@ -47,24 +48,8 @@ export const Hero = () => {
           </div>
 
           <div className="flex gap-4">
-            <button
-              onClick={() => setIndex?.(2)}
-              className="w-full lg:w-fit px-6 py-3 rounded-xl bg-indigo-500 text-sm font-medium
-                         shadow-[0_0_30px_-8px_rgba(99,102,241,0.8)]
-                         hover:shadow-[0_0_40px_-6px_rgba(99,102,241,1)]
-                         transition cursor-pointer"
-            >
-              {hero.ctaPrimary}
-            </button>
-
-            <button
-              onClick={() => setIndex?.(1)}
-              className="w-full lg:w-fit px-6 py-2.5 rounded-xl
-                         border border-neutral-700 bg-neutral-900/40
-                         text-sm font-medium hover:bg-neutral-800 transition cursor-pointer"
-            >
-              {hero.ctaSkills}
-            </button>
+            <DefaultButton title={hero.ctaPrimary} handler={() => setIndex?.(2)} />
+            <PrimaryButton title={hero.ctaSkills} handler={() => setIndex?.(1)}/>
           </div>
         </div>
 
