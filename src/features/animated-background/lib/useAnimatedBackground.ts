@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useTransform } from "framer-motion";
+import { useTransform } from "framer-motion";
 import { IComponentProps } from "../ui/interface";
 
 const THEMES = [

@@ -14,7 +14,6 @@ export function Component({index, progress, projectsProgress}: IComponentProps) 
       animate={{ backgroundColor: theme.base }}
       transition={{ duration: 0.8, ease: "easeInOut" }}
     >
-      {/* LIGHT SWEEP */}
       <motion.div
         className="absolute inset-0"
         animate={{
@@ -29,7 +28,6 @@ export function Component({index, progress, projectsProgress}: IComponentProps) 
         transition={{ duration: 1, ease: "easeInOut" }}
       />
 
-      {/* BLOB 1 */}
       <motion.div
         className="absolute w-[700px] h-[700px] rounded-full blur-[120px]"
         style={{
@@ -44,7 +42,6 @@ export function Component({index, progress, projectsProgress}: IComponentProps) 
         transition={{ duration: 1.2, ease: "easeInOut" }}
       />
 
-      {/* BLOB 2 */}
       <motion.div
         className="absolute right-[-300px] bottom-[-300px] w-[600px] h-[600px] rounded-full blur-[140px]"
         style={{ background: theme.accent }}
@@ -69,10 +66,8 @@ export function Component({index, progress, projectsProgress}: IComponentProps) 
       />
 
 
-      {/* NOISE */}
       <div className="absolute inset-0 opacity-[0.04] pointer-events-none" />
 
-      {/* VIGNETTE */}
       <div className="absolute inset-0 bg-linear-to-b from-black/30 via-transparent to-black/40" />
     </motion.div>
   );

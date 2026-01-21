@@ -44,9 +44,6 @@ export function useFullpage({ sectionCount }: Options) {
     );
   };
 
-  /* -------------------------------------------------
-     1️⃣ Прогресс ВНУТРИ секции
-  ------------------------------------------------- */
   useEffect(() => {
     const el = getScrollable();
     if (!el) return;
@@ -60,10 +57,6 @@ export function useFullpage({ sectionCount }: Options) {
     return () => el.removeEventListener("scroll", update);
   }, [index, progress]);
 
-  /* -------------------------------------------------
-     2️⃣ Прогресс МЕЖДУ секциями
-     (когда index меняется)
-  ------------------------------------------------- */
   useEffect(() => {
     const target = index / (sectionCount - 1);
 
@@ -73,9 +66,6 @@ export function useFullpage({ sectionCount }: Options) {
     });
   }, [index, sectionCount, progress]);
 
-  /* -------------------------------------------------
-     3️⃣ Wheel-логика (твоя, почти без изменений)
-  ------------------------------------------------- */
   useEffect(() => {
     const onWheel = (e: WheelEvent) => {
       if (lockRef.current) return;
@@ -90,7 +80,6 @@ export function useFullpage({ sectionCount }: Options) {
       const atBottom =
         el.scrollTop + el.clientHeight >= el.scrollHeight - 2;
 
-      // разрешаем внутренний скролл
       if (goingDown && !atBottom) return;
       if (goingUp && !atTop) return;
 

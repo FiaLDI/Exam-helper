@@ -1,7 +1,4 @@
 "use client";
-
-import { useRef, useState } from "react";
-
 import {
   TimelineItem as TimelineItemComponent,
 } from "@/entities/timeline";
@@ -38,7 +35,6 @@ export const TimeLine = () => {
       </h2>
 
       <div className="relative mt-16">
-        {/* CENTRAL LINE */}
         <div className="absolute left-1/2 top-0 -translate-x-1/2 h-full">
           <div className="absolute top-0 bottom-0 w-px bg-neutral-700/40" />
           <div
@@ -47,7 +43,6 @@ export const TimeLine = () => {
           />
         </div>
 
-        {/* CONTENT */}
         <ol className="relative space-y-24">
           {items.items.map((item) => (
             <TimelineItemComponent

@@ -9,8 +9,6 @@ import { OrderAnimation } from "@/shared/ui/animation";
 import { slideInRight } from "../model/animations";
 import { DefaultButton } from "@/shared/ui/button";
 
-/* ---------- COMPONENT ---------- */
-
 export const Contacts = () => {
   const data = useDict("contacts");
 
