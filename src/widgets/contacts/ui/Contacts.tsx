@@ -15,19 +15,14 @@ export const Contacts = () => {
   const { isActive } = useInitAnimation();
 
   return (
-    <section className="h-screen max-w-7xl mx-auto w-full px-6">
+    <div id="contact" className="min-h-screen max-w-7xl mx-auto w-full px-6 py-16">
       <OrderAnimation isActive={isActive}>
         <div className="absolute inset-0 flex justify-center items-center pointer-events-none">
           <div className="w-[700px] h-[700px] rounded-full bg-indigo-500/10 blur-[160px]" />
         </div>
-
         <motion.div
           variants={slideInRight}
-          className="relative z-10 w-full max-w-5xl rounded-3xl
-                     bg-neutral-900/60 backdrop-blur-xl
-                     border border-neutral-800
-                     shadow-[0_30px_80px_rgba(0,0,0,0.6)]
-                     p-10 text-white"
+          className="relative z-10 w-full max-w-5xl rounded-3xl bg-neutral-900/60 backdrop-blur-xl border border-neutral-800 shadow-[0_30px_80px_rgba(0,0,0,0.6)] p-10 text-white"
         >
           <motion.div variants={slideInRight} className="mb-10">
             <h2 className="text-4xl font-semibold tracking-tight">
@@ -37,7 +32,6 @@ export const Contacts = () => {
               {data.subtitle}
             </p>
           </motion.div>
-
           <div className="grid md:grid-cols-2 gap-12">
             <motion.div variants={slideInRight} className="space-y-6 text-neutral-300">
               <ContactItem
@@ -56,21 +50,14 @@ export const Contacts = () => {
                 href={CONTACT_STATIC.telegram}
               />
             </motion.div>
-
             <motion.div variants={slideInRight}>
               <h3 className="text-xl font-medium mb-4">
                 {data.messageTitle}
               </h3>
-
               <form className="flex flex-col gap-4">
                 <textarea
                   placeholder={data.messagePlaceholder}
-                  className="w-full h-32 rounded-xl
-                             bg-neutral-950/60
-                             border border-neutral-800
-                             p-4 text-sm text-white
-                             focus:outline-none focus:border-indigo-500/60
-                             transition resize-none"
+                  className="w-full h-32 rounded-xl bg-neutral-950/60 border border-neutral-800 p-4 text-sm text-white focus:outline-none focus:border-indigo-500/60 transition resize-none"
                 />
                 <DefaultButton title={data.cta} />
               </form>
@@ -78,6 +65,6 @@ export const Contacts = () => {
           </div>
         </motion.div>
       </OrderAnimation>
-    </section>
+    </div>
   );
 };

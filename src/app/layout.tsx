@@ -3,7 +3,7 @@ import "./globals.css";
 
 import { LanguageInit } from "@/features/language-switcher/ui/LanguageInit";
 import { getLang } from "@/shared/server/getLang";
-import { ModalContainer } from "@/features/open-modal";
+import { ClientOverlays } from "./ClientOverlays";
 
 const roboto = Roboto({
   subsets: ["latin", "cyrillic"],
@@ -24,7 +24,7 @@ export default async function RootLayout({
 
         {children}
 
-        <ModalContainer />
+        <ClientOverlays />
       </body>
     </html>
   );

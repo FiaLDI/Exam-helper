@@ -12,9 +12,7 @@ export function FullpageProgress() {
   const { index, setIndex } = ctx;
 
   return (
-    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-20
-                    flex gap-4 bg-black/40 backdrop-blur-md
-                    rounded-xl px-4 py-2">
+    <div className="fixed bottom-5 left-1/2 -translate-x-1/2 z-20 flex gap-4 bg-black/40 backdrop-blur-md rounded-xl px-4 py-2 pointer-events-auto">
       {SECTIONS.map((label, i) => (
         <button
           data-current={index===i}

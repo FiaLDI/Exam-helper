@@ -1,63 +1,70 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { useModalStore } from "../model/modalStore";
 import { createPortalNode } from "../lib/createPortalNode";
 
+type Portal = ReturnType<typeof createPortalNode>;
+
 export const ModalContainer = () => {
-    const { open, content, closeModal } = useModalStore();
+  const { open, content, closeModal } = useModalStore();
 
-    const portalRef = useRef<ReturnType<typeof createPortalNode> | null>(null);
+  // ✅ lazy init — NOT in effect
+  const [portal] = useState<Portal | null>(() => {
+    if (typeof window === "undefined") return null;
+    return createPortalNode();
+  });
 
-    useEffect(() => {
-        if (!portalRef.current) {
-            portalRef.current = createPortalNode();
-        }
+  // ✅ cleanup only (no setState)
+  useEffect(() => {
+    return () => {
+      portal?.remove();
+    };
+  }, [portal]);
 
-        return () => {
-            portalRef.current?.remove();
-        };
-    }, []);
+  // body scroll lock
+  useEffect(() => {
+    document.body.style.overflow = open ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
 
-    useEffect(() => {
-        document.body.style.overflow = open ? "hidden" : "";
-        return () => {document.body.style.overflow = ""};
-    }, [open]);
+  // esc handler
+  useEffect(() => {
+    if (!open) return;
 
-    useEffect(() => {
-        if (!open) return;
+    const onKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") closeModal();
+    };
 
-        const handler = (e: KeyboardEvent) => {
-            if (e.key === "Escape") closeModal();
-        };
+    window.addEventListener("keydown", onKeyDown);
+    return () => window.removeEventListener("keydown", onKeyDown);
+  }, [open, closeModal]);
 
-        window.addEventListener("keydown", handler);
-        return () => window.removeEventListener("keydown", handler);
-    }, [open]);
+  // ✅ render uses STATE only
+  if (!open || !portal) return null;
 
-    if (!open || !portalRef.current) return null;
-
-    return createPortal(
-        <div
-            className="fixed inset-0 bg-black/40 backdrop-blur-md
-                       flex justify-center items-center z-50"
-            onClick={(e) => {
-                if (e.target === e.currentTarget) closeModal();
-            }}
+  return createPortal(
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-md"
+      onClick={(e) => {
+        if (e.target === e.currentTarget) closeModal();
+      }}
+    >
+      <div className="relative min-w-[300px] max-w-[80vw] rounded-xl bg-gray-800 p-6">
+        <button
+          onClick={closeModal}
+          className="absolute right-4 top-4 hover:text-red-400"
         >
-            <div className="bg-gray-800 rounded-xl p-6 relative min-w-[300px] max-w-[80vw]">
-                <button
-                    onClick={closeModal}
-                    className="absolute right-4 top-4 hover:text-red-400"
-                >
-                    <X />
-                </button>
+          <X />
+        </button>
 
-                <div>{content}</div>
-            </div>
-        </div>,
-        portalRef.current.node
-    );
+        {content}
+      </div>
+    </div>,
+    portal.node
+  );
 };
