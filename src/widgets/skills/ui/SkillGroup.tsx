@@ -1,4 +1,4 @@
-import { SkillGroup as SkillGroupType } from "@/entities/skill";
+import { SkillGroup as SkillGroupType, SkillItem } from "@/entities/skill";
 import { ToTopLeaped } from "@/shared/ui/animation";
 
 export const SkillGroup = ({ group }: { group: SkillGroupType }) => {
@@ -52,29 +52,7 @@ export const SkillGroup = ({ group }: { group: SkillGroupType }) => {
                flex flex-col lg:grid grid-cols-3 gap-5
             "
           >
-            {group.items.map((item, idx) => (
-                <div
-                    key={`item-skills-${idx}`}
-                    className="
-                    rounded-md
-                    border border-neutral-800
-                    bg-neutral-900/60
-                    px-4 py-3
-                    hover:border-indigo-500/40
-                    transition-colors
-                    "
-                >
-                    {/* Capability */}
-                    <div className="text-sm text-neutral-200">
-                    {item.capability}
-                    </div>
-
-                    {/* Stack */}
-                    <div className="mt-1 text-xs text-neutral-400">
-                    {item.stack.join(" · ")}
-                    </div>
-                </div>
-                ))}
+            {group.items.map((item, idx) => <SkillItem key={`item-skills-${idx}`} item={item}/>)}
 
           </div>
 
