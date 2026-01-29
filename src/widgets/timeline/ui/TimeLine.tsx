@@ -21,25 +21,18 @@ export const TimeLine = () => {
   useSlowScroll(containerRef, { speed: 0.2 });
 
   return (
-    <section
-      ref={containerRef}
+    <div
+      id="timeline"
       data-scrollable
-      style={{ WebkitOverflowScrolling: "touch" }}
-      className="
-        h-screen w-full
-        overflow-y-auto no-scrollbar
-      "
+      className="min-h-screen w-full lg:h-screen lg:overflow-y-auto lg:no-scrollbar"
     >
+
       <div className="max-w-7xl mx-auto px-6 py-12 pb-32 text-white relative">
 
         {/* HEADER */}
         <div className="mb-20 max-w-2xl">
           <h2
-            className="
-              text-4xl lg:text-5xl
-              font-semibold
-              tracking-tight
-            "
+            className="text-4xl lg:text-5xl font-semibold tracking-tight"
           >
             {data.title}
           </h2>
@@ -80,6 +73,6 @@ export const TimeLine = () => {
           </ol>
         </div>
       </div>
-    </section>
+    </div>
   );
 };

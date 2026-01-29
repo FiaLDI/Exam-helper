@@ -2,18 +2,13 @@
 
 import { MotionValue } from "framer-motion";
 
+import { usePlatform } from "@/shared/lib/platform";
 import { useBackgroundTheme } from "../model/useBackgroundTheme";
 import { useBackgroundMotion } from "../model/useBackgroundMotion";
 
 import { DesktopBackground } from "./DesktopBackground";
 import { MobileBackground } from "./MobileBackground";
 import { IOSBackground } from "./IOSBackground";
-
-import {
-  isIOS,
-  isMobile,
-  prefersReducedMotion,
-} from "@/shared/lib";
 
 export interface IComponentProps {
   index: number;
@@ -26,34 +21,35 @@ export function AnimatedBackground({
   progress,
   projectsProgress,
 }: IComponentProps) {
-  /**
-   * theme — зависит только от index
-   */
   const theme = useBackgroundTheme(index);
+  const motion = useBackgroundMotion(
+    progress,
+    projectsProgress
+  );
+
+  const {
+    isIOS,
+    isMobile,
+    prefersReducedMotion,
+    mounted,
+  } = usePlatform();
 
   /**
-   * motion — ХУК ВСЕГДА ВЫЗЫВАЕТСЯ
-   * даже если результат не используется
+   * SSR + первый client render
+   * ВСЕГДА одинаковый
    */
-  const motion = useBackgroundMotion(progress, projectsProgress);
+  if (!mounted) {
+    return <IOSBackground theme={theme} />;
+  }
 
-  /**
-   * iOS / reduced motion — самый лёгкий путь
-   */
   if (isIOS || prefersReducedMotion) {
     return <IOSBackground theme={theme} />;
   }
 
-  /**
-   * Mobile (Android / touch)
-   */
   if (isMobile) {
     return <MobileBackground theme={theme} />;
   }
 
-  /**
-   * Desktop — полный FX
-   */
   return (
     <DesktopBackground
       index={index}

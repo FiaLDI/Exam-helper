@@ -1,174 +1,91 @@
 "use client";
 
+import { ReactNode } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ReactNode, useEffect, useRef } from "react";
-import { FullPageStaticConfig, useFullpage } from "../model";
+
 import { FullpageContext } from "../model";
+import { useDesktopFullpage } from "../model/useDesktopFullpage";
+import { useMobileSections } from "../model/useMobileSections";
+
 import { FullpageProgress } from "./FullpageProgress";
 import { LanguageSwitcher } from "@/features/language-switcher/ui/LanguageSwitcher";
 import { AnimatedBackground } from "@/features/animated-background/ui";
-import { canScroll, getScrollableParent } from "@/shared/utils/scroll";
-import { isIOS, isMobile } from "@/shared/lib";
 
-/* ---------------- HELPERS ---------------- */
+import { usePlatform } from "@/shared/lib/platform";
 
-function canExitScrollable(el: HTMLElement, deltaY: number) {
-  const atTop = el.scrollTop <= 0;
-  const atBottom =
-    el.scrollTop + el.clientHeight >= el.scrollHeight - 1;
+export function FullpageLayout({
+  sections,
+}: {
+  sections: ReactNode[];
+}) {
+  const { isMobile, isIOS } = usePlatform();
 
-  if (deltaY > 0 && atBottom) return true; // вниз
-  if (deltaY < 0 && atTop) return true;   // вверх
+  const isDesktop = !(isMobile || isIOS);
 
-  return false;
-}
-
-/* ---------------- COMPONENT ---------------- */
-
-export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
-  const { index, setIndex, progress, projectsProgress } = useFullpage({
+  const desktop = useDesktopFullpage({
     sectionCount: sections.length,
+    enabled: isDesktop,
   });
 
-  const max = sections.length - 1;
+  const mobile = useMobileSections({
+    sectionCount: sections.length,
+    enabled: !isDesktop,
+  });
 
-  const lastWheelTs = useRef(0);
-  const touchStartY = useRef(0);
+  const index = isDesktop
+    ? desktop.index
+    : mobile.activeIndex;
 
-  const useNativeScroll = isIOS || isMobile;
-
-  /* ============================================================
-     =============== MOBILE / iOS TOUCH HANDLER =================
-     ============================================================ */
-
-  useEffect(() => {
-    if (!useNativeScroll) return;
-
-    const onTouchStart = (e: TouchEvent) => {
-      touchStartY.current = e.touches[0].clientY;
-    };
-
-    const onTouchEnd = (e: TouchEvent) => {
-      const endY = e.changedTouches[0].clientY;
-      const deltaY = touchStartY.current - endY;
-
-      if (
-        Math.abs(deltaY) <
-        FullPageStaticConfig.SWIPE_THRESHOLD
-      )
-        return;
-
-      const target = e.target as HTMLElement;
-      const scrollable = getScrollableParent(target);
-
-      // если внутри scrollable и он ещё может скроллить — НЕ листаем секцию
-      if (scrollable && !canExitScrollable(scrollable, deltaY)) {
-        return;
-      }
-
-      if (deltaY > 0 && index < max) {
-        setIndex(index + 1);
-      }
-
-      if (deltaY < 0 && index > 0) {
-        setIndex(index - 1);
-      }
-    };
-
-    window.addEventListener("touchstart", onTouchStart, { passive: true });
-    window.addEventListener("touchend", onTouchEnd, { passive: true });
-
-    return () => {
-      window.removeEventListener("touchstart", onTouchStart);
-      window.removeEventListener("touchend", onTouchEnd);
-    };
-  }, [useNativeScroll, index, max, setIndex]);
-
-  /* ============================================================
-     ===================== DESKTOP WHEEL ========================
-     ============================================================ */
-
-  useEffect(() => {
-    if (useNativeScroll) return;
-
-    const onWheel = (e: WheelEvent) => {
-      const scrollable = getScrollableParent(e.target);
-
-      if (scrollable && canScroll(scrollable, e.deltaY)) {
-        e.stopPropagation();
-        return;
-      }
-
-      if (
-        Math.abs(e.deltaY) <
-        FullPageStaticConfig.WHEEL_THRESHOLD
-      )
-        return;
-
-      const now = Date.now();
-      if (
-        now - lastWheelTs.current <
-        FullPageStaticConfig.WHEEL_COOLDOWN_MS
-      )
-        return;
-
-      lastWheelTs.current = now;
-      e.preventDefault();
-
-      if (e.deltaY > 0 && index < max) setIndex(index + 1);
-      if (e.deltaY < 0 && index > 0) setIndex(index - 1);
-    };
-
-    window.addEventListener("wheel", onWheel, { passive: false });
-    return () => window.removeEventListener("wheel", onWheel);
-  }, [useNativeScroll, index, max, setIndex]);
-
-  /* ============================================================
-     ===================== RENDER ===============================
-     ============================================================ */
+  const setIndex = (i: number) => {
+    if (isDesktop) {
+      desktop.setIndex(i);
+    } else {
+      mobile.scrollTo(i);
+    }
+  };
 
   return (
     <FullpageContext.Provider
-      value={{ index, setIndex, progress, projectsProgress }}
+      value={{
+        index,
+        setIndex,
+        progress: desktop.progress,
+        projectsProgress: desktop.projectsProgress,
+      }}
     >
       <AnimatedBackground
         index={index}
-        progress={progress}
-        projectsProgress={projectsProgress}
+        progress={desktop.progress}
+        projectsProgress={desktop.projectsProgress}
       />
 
-      {/* ---------- MOBILE / iOS ---------- */}
-      {useNativeScroll ? (
+      {!isDesktop && (
         <>
-          <div className="fixed inset-0 z-10 pointer-events-none">
-            <FullpageProgress />
-            <LanguageSwitcher />
+          <div className="fixed inset-0 z-20 pointer-events-none">
+            <div className="pointer-events-auto">
+              <FullpageProgress />
+            </div>
+            <div className="pointer-events-auto">
+              <LanguageSwitcher />
+            </div>
           </div>
-
-          <div
-            className="h-screen overflow-y-scroll snap-y snap-mandatory"
-            onScroll={(e) => {
-              const el = e.currentTarget;
-              const nextIndex = Math.round(
-                el.scrollTop / el.clientHeight
-              );
-
-              if (nextIndex !== index) {
-                setIndex(
-                  Math.min(max, Math.max(0, nextIndex))
-                );
-              }
-            }}
-          >
+          <div className="h-screen overflow-y-auto overflow-x-hidden">
             {sections.map((section, i) => (
-              <section key={i} className="h-screen snap-start">
+              <section
+                key={i}
+                ref={(el) => {
+                  mobile.sectionRefs.current[i] = el;
+                }}
+                data-index={i}
+                className="min-h-screen"
+              >
                 {section}
               </section>
             ))}
           </div>
         </>
-      ) : (
-        /* ---------- DESKTOP ---------- */
+      )}
+      {isDesktop && (
         <div className="w-full h-screen overflow-hidden relative z-10">
           <FullpageProgress />
           <LanguageSwitcher />
@@ -182,25 +99,26 @@ export function FullpageLayout({ sections }: { sections: ReactNode[] }) {
               dragElastic={0.15}
               onDragEnd={(_, info) => {
                 if (
-                  info.offset.y <
-                    -FullPageStaticConfig.SWIPE_THRESHOLD &&
-                  index < max
+                  info.offset.y < -80 &&
+                  index < sections.length - 1
                 ) {
-                  setIndex(index + 1);
+                  desktop.setIndex(index + 1);
                 }
 
                 if (
-                  info.offset.y >
-                    FullPageStaticConfig.SWIPE_THRESHOLD &&
+                  info.offset.y > 80 &&
                   index > 0
                 ) {
-                  setIndex(index - 1);
+                  desktop.setIndex(index - 1);
                 }
               }}
               initial={{ y: "100%" }}
               animate={{ y: 0 }}
               exit={{ y: "-100%" }}
-              transition={{ duration: 0.7, ease: "easeInOut" }}
+              transition={{
+                duration: 0.7,
+                ease: "easeInOut",
+              }}
             >
               <div className="h-full w-full">
                 {sections[index]}

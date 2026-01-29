@@ -1,13 +1,23 @@
-import { FullpageContext } from "@/features/custom-scroll/model";
+"use client";
+
 import { useContext } from "react";
+import { FullpageContext } from "@/features/custom-scroll/model";
+import { usePlatform } from "@/shared/lib/platform";
 
 const CONTACT_INDEX = 4;
 
-export const useInitAnimation = (): {isActive: boolean; } => {
-    const ctx = useContext(FullpageContext);
+export const useInitAnimation = (): { isActive: boolean } => {
+  const ctx = useContext(FullpageContext);
 
-    const { index } = ctx;
-    const isActive = index === CONTACT_INDEX;
+  const {
+    isIOS,
+    isMobile,
+  } = usePlatform();
 
-    return {isActive}
-}
+  if (isIOS || isMobile) {
+    return { isActive: true };
+  }
+
+  const { index } = ctx;
+  return { isActive: index === CONTACT_INDEX };
+};

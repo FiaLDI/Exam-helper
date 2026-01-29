@@ -8,31 +8,18 @@ export const Skills = () => {
   const groups = useDict("skillsGroup");
 
   return (
-    <section
-      className="h-screen w-full"
+    <div
+      id="skills"
+      className="lg:h-screen w-full"
     >
       <div
         data-scrollable
-        style={{ WebkitOverflowScrolling: "touch" }}
-        className="
-          relative
-          h-full w-full flex flex-col lg:justify-center lg:items-center max-w-7xl mx-auto
-          px-6 py-10 pb-40 gap-5
-          overflow-y-auto overscroll-contain
-          touch-pan-y
-          no-scrollbar
-          text-white 
-        "
+        className="relative w-full flex flex-col max-w-7xl mx-auto px-6 py-10 pb-40 gap-5 text-white lg:h-full lg:overscroll-contain lg:no-scrollbar"
       >
         {/* HEADER */}
         <div className="max-w-2xl relative z-10">
           <h2
-            className="
-              text-4xl lg:text-5xl
-              font-semibold
-              tracking-tight
-              w-fit border-b border-indigo-500/60 pb-3
-            "
+            className="text-4xl lg:text-5xl font-semibold tracking-tight w-fit border-b border-indigo-500/60 pb-3"
           >
             {data.title}
           </h2>
@@ -48,6 +35,6 @@ export const Skills = () => {
           ))}
         </div>
       </div>
-    </section>
+    </div>
   );
 };

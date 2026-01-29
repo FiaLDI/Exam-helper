@@ -37,7 +37,6 @@ export function TimelineItem({
       ref={ref}
       className="relative flex justify-center"
     >
-      {/* CENTER DOT */}
       <motion.span
         className="
           absolute top-7
@@ -53,8 +52,6 @@ export function TimelineItem({
         }}
         transition={{ duration: 0.3 }}
       />
-
-      {/* CARD */}
       <motion.div
         initial={{ opacity: 0, y: 24 }}
         animate={{
@@ -62,84 +59,33 @@ export function TimelineItem({
           scale: isActive ? 1 : 0.97,
         }}
         transition={{ duration: 0.35, ease: "easeOut" }}
-        className={`
-          relative
-          max-w-md
-          rounded-xl
-          border
-          p-6
-          ${
-            isLeft
-              ? "mr-auto ml-16"
-              : "ml-auto mr-16"
-          }
-          ${
-            isCompleted
-              ? "border-indigo-500/30 bg-neutral-900/70"
-              : "border-neutral-800 bg-neutral-900/40"
-          }
-        `}
+        className={`relative max-w-md rounded-xl border p-6 ${isLeft ? "mr-auto ml-16" : "ml-auto mr-16"} ${ isCompleted ? "border-indigo-500/30 bg-neutral-900/70" : "border-neutral-800 bg-neutral-900/40" }`}
       >
-        {/* ACTIVE GLOW */}
         {isActive && (
           <div
-            className="
-              absolute -inset-6
-              rounded-2xl
-              bg-indigo-500/10
-              blur-xl
-              -z-10
-            "
+            className="absolute -inset-6 rounded-2xl bg-indigo-500/10 blur-xl -z-10"
           />
         )}
-
-        {/* META */}
         <div
-          className="
-            text-xs
-            uppercase
-            tracking-widest
-            text-neutral-500
-            mb-2
-          "
+          className="text-xs uppercase tracking-widest text-neutral-500 mb-2"
         >
           Stage {id}
         </div>
-
-        {/* TITLE */}
         <h3
-          className="
-            text-lg
-            font-medium
-            tracking-tight
-            text-neutral-100
-          "
+          className="text-lg font-medium tracking-tight text-neutral-100"
         >
           {title}
         </h3>
-
-        {/* SUBTITLE */}
         {subtitle && (
           <p
-            className="
-              mt-1
-              text-sm
-              text-neutral-300
-            "
+            className="mt-1 text-sm text-neutral-300"
           >
             {subtitle}
           </p>
         )}
-
-        {/* DESCRIPTION */}
         {description && (
           <p
-            className="
-              mt-3
-              text-sm
-              leading-relaxed
-              text-neutral-400
-            "
+            className="mt-3 ext-sm leading-relaxed text-neutral-400"
           >
             {description}
           </p>
