@@ -5,15 +5,14 @@ import { useExamStore } from "@/entities/exam/model/store";
 import { useQuestionStore } from "@/entities/question";
 import { ExamForm } from "@/features/exam-update";
 import { useModal } from "@/features/open-modal";
+import { ChangeView, useView } from "@/shared/hooks";
 import { Grid2x2, Plus, Rows2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export type View = "block" | "list" 
-
 export const ExamList = () => {
 
-    const [view, setView] = useState<View>("block");
+    const { view, setBlock, setList } = useView();
 
     const { exam, addExam, removeExam, editExam, startExam } = useExamStore();
     const { startQuestions } = useQuestionStore();
@@ -37,10 +36,7 @@ export const ExamList = () => {
                         </button>
                     </div>
                 </div>
-                <div className="flex gap-5">
-                    <button data-active={view === "list"} className="" onClick={() => setView("list")}><Rows2 /></button>
-                    <div data-active={view === "block"} onClick={() => setView("block")}><Grid2x2 /></div>
-                </div>
+                <ChangeView view={view} setBlock={setBlock} setList={setList} />
             </div>  
             <div 
                 data-view={view} 
@@ -65,7 +61,7 @@ export const ExamList = () => {
                             "Изменение экзамена")
                         }} 
                         link={()=>{
-                            router.push(`exam/${val.id}`)
+                            router.push(`exams/${val.id}`)
                         }}
                     />
                 )}

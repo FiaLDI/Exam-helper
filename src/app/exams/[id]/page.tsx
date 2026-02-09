@@ -2,11 +2,13 @@ import { ExamShow } from "@/widgets/examshow";
 import { Header } from "@/widgets/header";
 import { QuestionList } from "@/widgets/questionlist";
 
+interface ExamPageProps {
+  params: Promise<{ id: string }>;
+}
+
 export default async function Page({
   params,
-}: {
-  params: Promise<{ id: string }>;
-}) {
+}: ExamPageProps) {
   const { id } = await params;
 
   return (

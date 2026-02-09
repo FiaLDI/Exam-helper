@@ -3,8 +3,12 @@
 import { Exam } from "@/entities/exam";
 import { useExamGetById } from "@/features/exam-getter";
 
-export const ExamShow = ({id}: {id: string}) => {
-    const Exam: Exam = useExamGetById({id});
+interface ExamShowProps {
+    id: string
+} 
+
+export const ExamShow = ({id}: ExamShowProps) => {
+    const Exam: Exam | null = useExamGetById({id});
 
     return (
         <div className="p-5 max-w-7xl mx-auto w-full text-white flex flex-col gap-5">
