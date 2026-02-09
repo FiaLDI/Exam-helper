@@ -16,10 +16,8 @@ export const ExamCard = ({
   remove,
   edit,
   link
-}: ExamCardProps) => {
-  return (
+}: ExamCardProps) => (
     <div className="relative border-2 border-indigo-400 p-3 flex flex-col justify-between gap-3 min-w-0">
-      {/* Content */}
       <div className="min-w-0">
         <h3
           title={title}
@@ -33,7 +31,6 @@ export const ExamCard = ({
         </p>
       </div>
 
-      {/* Footer */}
       <div className="flex items-center justify-between gap-3 pt-2">
         <button 
           className="text-sm hover:text-indigo-400 transition-colors cursor-pointer"
@@ -71,5 +68,4 @@ export const ExamCard = ({
         </div>
       </div>
     </div>
-  );
-};
+);

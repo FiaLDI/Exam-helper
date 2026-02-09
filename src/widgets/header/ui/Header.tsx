@@ -16,7 +16,7 @@ export const Header = () => {
         <Menu className="lg:hidden text-white z-30" onClick={()=> setOpen(prev => !prev)} />
         <ul data-open={open} className="h-screen z-30 p-6 lg:p-0 lg:h-full w-screen lg:w-full bg-background top-0 left-0 absolute lg:relative items-center gap-6 text-white data-[open=false]:hidden lg:data-[open=false]:flex lg:flex">
           <LinkDefault href="/" text="Главная" />
-          <LinkDefault href="/exam" text="База экзаменов" />
+          <LinkDefault href="/exams" text="База экзаменов" />
           <LinkDefault href="/questions" text="База вопросов" />
         </ul>
         <Cross data-open={open} className="lg:hidden absolute right-5 top-5 data-[open=false]:hidden text-white z-30" onClick={()=> setOpen(prev => !prev)} />

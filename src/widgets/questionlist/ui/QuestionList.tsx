@@ -1,30 +1,37 @@
 "use client";
 
 import { Exam } from "@/entities/exam";
-import { useQuestionStore } from "@/entities/question";
-import { Question } from "@/entities/question/types/question.types";
+import { QuestionCard, useQuestionStore } from "@/entities/question";
+import { Question } from "@/entities/question";
 import { useExamGetById } from "@/features/exam-getter";
 import { useModal } from "@/features/open-modal";
-import { Grid2x2, Pencil, Plus, Rows2, Trash } from "lucide-react";
+import { QuestionForm } from "@/features/question-update";
+import { ChangeView, useView } from "@/shared/hooks";
+import { Grid2x2, Plus, Rows2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 
-export type View = "block" | "list" 
+interface QuestionListProps {
+    id?: string
+} 
 
-export const QuestionList = ({id}: {id: string}) => {
-    const Exam: Exam = useExamGetById({id});
-    const { questions, addQuestions, removeQuestions, editQuestions, getQuestionsByExamId, startQuestions } = useQuestionStore();
+export const QuestionList = ({id}: QuestionListProps) => {
+    const Exam: Exam | null = id ? useExamGetById({id}) : null;
+    const { questions, addQuestions, removeQuestions, editQuestions, getQuestionsByExamId } = useQuestionStore();
     const { openModal, closeModal } = useModal();
-    const [questionExam, setQuestionExam] = useState<Question[]>(getQuestionsByExamId(id));
+    const [questionExam, setQuestionExam] = useState<Question[]>(id ? getQuestionsByExamId(id) : questions);
+
     const router = useRouter();
 
-        const [view, setView] = useState<View>("block");
+    const { view, setBlock, setList } = useView();
 
     useEffect(() => {
-        if (!questionExam) {
+        if (id)
             setQuestionExam(getQuestionsByExamId(id));
+        else {
+            setQuestionExam(questions)
         }
-    }, []);
+    }, [questions, ]);
 
     return (
         <div className="p-5 max-w-7xl mx-auto w-full text-white flex flex-col gap-5">
@@ -33,41 +40,59 @@ export const QuestionList = ({id}: {id: string}) => {
             </div>
             <div className="flex w-full gap-5 items-center justify-between">
                 <div className=" flex w-full items-center gap-5">
-                    <h2 className="text-2xl ">Список экзаменов </h2> 
+                    <h2 className="text-2xl ">Список вопросов </h2> 
                     <div className="flex h-fit">
-                        <button >
+                        {id && <button 
+                            onClick={()=> {
+                                openModal((
+                                    <QuestionForm 
+                                        func={addQuestions} 
+                                        close={closeModal} 
+                                        base={{
+                                            id: "",
+                                            title: "",
+                                            description: "",
+                                            examId: id,
+                                            additionDescription: "",
+                                            answer: ""
+                                        }} 
+                                    />
+                                ), 
+                                "Создание вопроса экзамена"
+                        )}}>
                             <Plus />
                         </button>
+                    }   
                     </div>
                 </div>
-                <div className="flex gap-5">
-                    <button data-active={view === "list"} className="" onClick={() => setView("list")}><Rows2 /></button>
-                    <div data-active={view === "block"} onClick={() => setView("block")}><Grid2x2 /></div>
-                </div>
+                <ChangeView view={view} setBlock={setBlock} setList={setList} />
             </div>
             <div data-view={view} 
                 className={
                     "grid data-[view=block]:grid-cols-1 data-[view=block]:sm:grid-cols-2 gap-3"
                 }>
-                {questionExam.map((val, idx) => (
-                    <div key={`question-${val.id}-${idx}`} className="border p-3 flex gap-3">
-                        <div className="">{idx + 1}</div>
-                        <div className="">{val.title}</div>
-                        <button
-                            onClick={() => {removeQuestions(val)}}
-              className="hover:text-red-400 transition-colors cursor-pointer"
-              aria-label="Удалить вопрос экзамена"
-            >
-              <Trash size={18} />
-            </button>
-            <button
-            //   onClick={edit}
-              className="hover:text-indigo-400 transition-colors cursor-pointer"
-              aria-label="Редактировать вопрос экзамена"
-            >
-              <Pencil size={18} />
-            </button>
-                    </div>
+                {questionExam && questionExam.map((val, idx) => (
+                    <QuestionCard 
+                        key={`question-${val.id}-${idx}`} 
+                        idx={idx}
+                        title={val.title} 
+                        description={val.description} 
+                        remove={() => {
+                           removeQuestions(val)}
+                        } 
+                        edit={()=> {
+                            openModal((
+                                <QuestionForm 
+                                    func={editQuestions} 
+                                    close={closeModal} 
+                                    base={val} 
+                                />), 
+                            "Изменение вопроса экзамена")
+                        }} 
+                        link={()=>{
+                            router.push(`questions/${val.id}`)
+                        }}
+                    />
                 ))}
             </div>
         </div>

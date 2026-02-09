@@ -1,6 +1,10 @@
 import { Exam, useExamStore } from "@/entities/exam";
 
-export const useExamGetById = ({id}: {id: string}): Exam => {
+interface useExamGetByIdProps {
+    id: string
+}
+
+export const useExamGetById = ({id}: useExamGetByIdProps): Exam | null => {
 
     const { getExam } = useExamStore();
 

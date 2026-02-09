@@ -1,24 +1,28 @@
-import { Exam } from "@/entities/exam"
+import { Question } from "@/entities/question/types/question.types";
 import { generateUUID } from "@/shared/lib/uuid/uuid";
-import { DefaultButton } from "@/shared/ui/button"
-import { useState } from "react";
+import { DefaultButton } from "@/shared/ui/button";
+import { useCallback, useState } from "react";
 
-interface ExamFormProps {
-    base?: Exam, 
-    func: (exam: Exam) => boolean; 
+interface QuestionFormProps {
+    base: Question, 
+    func: (exam: Question) => boolean; 
     close: ()=>void
 }
 
-export const ExamForm = ({
+export const QuestionForm = ({
     base, 
     func, 
     close
-}: ExamFormProps) => {
-    const [data, setData] = useState<Exam>({
-        id: base ? base.id : generateUUID(), 
-        title: base ? base.title : "", 
-        description: base ? base.description : "", 
-        number: base ? base.number : "0"
+}: QuestionFormProps) => {
+    const isCreate = useCallback(() =>!!base.id, [base.id]);
+
+    const [data, setData] = useState<Question>({
+        id: isCreate() ? base.id : generateUUID(), 
+        title: isCreate() ? base.title : "", 
+        description: isCreate() ? base.description : "", 
+        examId: base.examId,
+        additionDescription: isCreate() ? base.additionDescription : "",
+        answer: isCreate() ? base.answer : "",
     });
 
     const submit = () => {
@@ -29,6 +33,14 @@ export const ExamForm = ({
     return (
         <div className="flex flex-col lg:w-[450px] p-3 items-center gap-7">
             <div className="w-full ">
+                <label htmlFor="" className="w-full text-sm text-neutral-500">ExamId</label>
+                <input 
+                    type="text" 
+                    name="examId"
+                    className="w-full box-border text-white p-1 border outline-0 text-sm disabled:text-neutral-500 pointer-none" 
+                    value={data.examId}
+                    disabled
+                />
                 <label htmlFor="" className="w-full text-sm text-neutral-300">Title</label>
                 <input 
                     type="text" 
@@ -55,7 +67,7 @@ export const ExamForm = ({
                 />
             </div>
             
-            <DefaultButton title="Create" handler={submit} />
+            <DefaultButton title={!isCreate() ? "Create" : "Edit"} handler={submit} />
         </div>
     )
 }

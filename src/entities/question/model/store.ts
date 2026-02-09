@@ -55,7 +55,6 @@ export const useQuestionStore = create<QuestionStore>((set, get) => ({
         id,
         title: "",
         description: "",
-        number: "",
         examId: "",
         additionDescription: "",
         answer: ""
