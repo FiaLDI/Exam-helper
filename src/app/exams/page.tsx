@@ -4,10 +4,11 @@ import { Header } from "@/widgets/header";
 
 export default async function Page() {
     
+
   return (
     <>
-      <Header />
-      <ExamList />
+    <Header />
+    <ExamList />
     </>
   );
 }
