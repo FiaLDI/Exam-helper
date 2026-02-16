@@ -6,9 +6,9 @@ import { useQuestionStore } from "@/entities/question";
 import { ExamForm } from "@/features/exam-update";
 import { useModal } from "@/features/open-modal";
 import { ChangeView, useView } from "@/shared/hooks";
-import { Grid2x2, Plus, Rows2 } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 export const ExamList = () => {
 
