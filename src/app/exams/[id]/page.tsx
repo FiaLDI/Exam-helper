@@ -1,6 +1,6 @@
-import { ExamShow } from "@/widgets/examshow";
+import { ExamShow } from "@/widgets/exam-show";
 import { Header } from "@/widgets/header";
-import { QuestionList } from "@/widgets/questionlist";
+import { QuestionList } from "@/widgets/question-list";
 
 interface ExamPageProps {
   params: Promise<{ id: string }>;

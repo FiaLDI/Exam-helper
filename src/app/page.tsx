@@ -6,9 +6,9 @@ export default async function Page() {
 
   return (
     <>
-    <Header />
-    <Hero />
-    <Control />
+      <Header />
+      <Hero />
+      <Control />
     </>
   );
 }
